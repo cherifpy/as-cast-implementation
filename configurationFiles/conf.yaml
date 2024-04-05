@@ -1,0 +1,47 @@
+---
+job_name: test_conf
+exp_env: debian11-min
+exp_walltime: 0:50:00
+machines:
+  - cluster: paravance
+    nodes: 1
+    roles: [Qnode1]
+    storage: 120
+  - cluster: paravance
+    nodes: 1
+    roles: [Qnode2]
+    storage: 120
+  - cluster: paravance
+    nodes: 1
+    roles: [Qbox1]
+    storage: 120
+  - cluster: paravance
+    nodes: 1
+    roles: [Qbox2]
+    storage: 120
+  - cluster: paravance
+    nodes: 1
+    roles: [Qbox2]
+    storage: 120
+network_constraints:
+  - default_delay: 20ms
+    default_rate: 1gbit
+    constraints: 
+      - src: site1 
+        dst: site2
+        delay: 10ms
+        symmetric: True
+      - src: site1 
+        dst: site3
+        delay: 15ms
+        symmetric: True
+      - src: site2 
+        dst: site3
+        delay: 30ms
+        symmetric: True
+
+packages:
+  - flent
+  - netperf
+  - python3-setuptools
+
