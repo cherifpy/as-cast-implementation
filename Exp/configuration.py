@@ -26,6 +26,7 @@ class Configuration:
         self.start_time = -1
         self.machines = [machine for machine in self.parametres.get('machines', [])]
         self.sites = [machine["roles"][0] for machine in self.machines]
+        self.roles = None
         self.contraintes = self.parametres.get('network_constraints',[{}])[0].get("constraints")
 
         self.nb_sites = len(self.machines)
@@ -100,11 +101,6 @@ class Configuration:
         list_results = {}
         for i,machine in enumerate(self.machines):
             print("storage restriction for ", machine["roles"])
-            #en.run_command(f"dd if=/dev/zero of=virtual_storage_disk.img bs=1M count={machine['storage']}",roles=self.roles[machine["roles"][0]])
-            #en.run_command("mkfs.ext4 virtual_storage_disk.img",roles=self.roles[machine["roles"][0]])
-            #en.run_command("mkdir /mnt/virtual_disk",roles=self.roles[machine["roles"][0]])
-            #en.run_command("mount virtual_storage_disk.img /mnt/virtual_disk",roles=self.roles[machine["roles"][0]])
-            #en.run_command("chmod 777 /mnt/virtual_disk/",roles=self.roles[machine["roles"][0]])
             
             with self.enoslib.actions(roles=self.roles[machine["roles"][0]]) as p:
                 p.command(
