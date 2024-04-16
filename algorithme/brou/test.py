@@ -4,8 +4,9 @@ import time
 context = zmq.Context()
 
 # Dealer socket for sending messages
-dealer_socket = context.socket(zmq.ROUTER)
+dealer_socket = context.socket(zmq.DEALER)
 dealer_socket.identity = b"Peer1"  # Set unique identity
+
 connected = dealer_socket.connect("tcp://localhost:5555")  # Connect to Peer 2's router
 print(f"Peer 1 connected: {connected} to peer 2")
 
@@ -18,39 +19,21 @@ print(f"Peer 1 connected: {connected} to peer 4")  # Check connection status
 connected = dealer_socket.connect("tcp://localhost:5558")  # Connect to Peer 1's router
 print(f"Peer 1 connected: {connected} to peer 5")  # Check connection status
 
-# Router socket for receiving messages
-router_socket = context.socket(zmq.DEALER)
-router_socket.bind("tcp://*:5554")  # Bind to port for others to connect
+dealer_socket.bind("tcp://*:5554")  # Bind to port for others to connect
 
-message = f"1st Message from Peer 1 at {time.time()}".encode()
-dealer_socket.send(message) 
 
-poller = zmq.Poller()
-poller.register(dealer_socket, zmq.POLLIN)
-poller.register(router_socket, zmq.POLLIN)
-# Prepare sockets for polling
+for i in range(4):
+    dealer_socket.send_multipart([dealer_socket.identity,"hello from client 1".encode()])
 
 
 while True:
-    poller = zmq.Poller()
-    poller.register(dealer_socket, zmq.POLLIN)
-    poller.register(router_socket, zmq.POLLIN)
 
-    events = dict(poller.poll(timeout=0))  # Timeout of 0 for non-blocking
-
-    if events.get(dealer_socket) == zmq.POLLIN:
-        message = f"Message from Peer 1 at {2}".encode()
-        router_socket.send()  # Send to Peer 2
-
-    # Receive message if router socket has data
-    if events.get(router_socket) == zmq.POLLIN:
-
-        sender_identity = router_socket.recv()
-
-        print(f"Received from {sender_identity}")
-
-
-        router_socket.send("hello".encode())
+    message = dealer_socket.recv_multipart()
+    if (message[0].decode() != dealer_socket.identity.decode()):
+        
+        print(f"Received {message}")
+        
+        #dealer_socket.send_multipart([message[0],"hello from client 1".encode()])
 
 """import zmq
 import time
