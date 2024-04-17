@@ -21,10 +21,16 @@ print(f"Peer 1 connected: {connected} to peer 6")
 
 dealer_socket.bind("tcp://*:5554")  # Bind to port for others to connect
 
-for i in range(4):
-    dealer_socket.send_multipart([dealer_socket.identity,"None".encode(), "voila".encode()])
-    dealer_socket
 
+"""
+for i in range(4):
+    v
+    m = dealer_socket.recv_multipart()
+    print(m)
+"""
+
+
+dealer_socket.send_multipart([dealer_socket.identity,"None".encode(), "voila".encode()])
 while True:
 
     message = dealer_socket.recv_multipart()
