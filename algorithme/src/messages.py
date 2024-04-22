@@ -16,6 +16,7 @@ class Message(object):
         self.time = time.time() 
         self.forward_from = forward_from
 
+
 class Delete(Message):
     def __init__(self, id_sender:int, sender:str, id_data:int,forward_from):
         super().__init__("delete", sender)
@@ -29,13 +30,23 @@ class Add(Message):
         self.cost = cost
         self.id_data = id_data
 
+class ReplayMessag(Message):
+    def __init__(self, type, forward_from, destination, sender):
+        super().__init__(type, forward_from)
+        self.destination = destination
+        self.sender = sender
+
 class Refuse(Message):
     def __init__(self, type, sender):
         super().__init__(type, sender)
 
+
 class Blocked(Message):
     def __init__(self, type, sender):
         super().__init__(type, sender)
+
+
+    
 
 
 

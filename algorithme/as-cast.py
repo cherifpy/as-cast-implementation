@@ -23,42 +23,9 @@ neighbors = DATAS_RECIEVED["nieghbors"]
 
 
 
-def listner():
-    context = zmq.Context()
-    socket = context.socket(zmq.REP)
-    socket.bind("tcp://*:5555")
-
-    while True:
-        message = socket.recv()
-        print(f"Received request: {message}")
-
-        time.sleep(1)
-
-        socket.send(b"World")
-
-
-def sender(message:object):
-
-    context = zmq.Context()
-
-    print("Connecting to hello world server…")
-    socket = context.socket(zmq.REQ)
-    socket.connect("tcp://localhost:5555")
-
-    for request in range(10):
-        print(f"Sending request {request} …")
-        socket.send(b"Hello")
-
-        message = socket.recv()
-        print(f"Received reply {request} [ {message} ]")
-
-
 if __name__ == "__main__":
 
-    my_actor = ac.Actor.start()
-    my_actor.tell("Hello")
-
-    answer = my_actor.ask({'msg': 'Hi?'})
+    pass
     # => May block forever waiting for an answer
 
         

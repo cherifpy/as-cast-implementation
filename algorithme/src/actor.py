@@ -1,5 +1,5 @@
 import sys
-from .messages import Add, Delete, Message
+from .messages import Add, Delete, Message, ReplayMessag
 import numpy as np
 import zmq
 import time
@@ -13,28 +13,27 @@ from partition import Partition
 
 class Actor:
 
-    def __init__(self,id:str, site:str, costs:list, addr:str, port:int,total_memorie):
+    def __init__(self,id:str, site:str, costs:list, addr:str, port:int,total_memorie, neighbors:dict):
         self.site = site
         self.state = None
         self.min_cout = sys.maxsize
         self.actual_source = None
         self.is_source = False
         self.id = f"{id}"
-        self.neighbors = {}
+        self.neighbors = neighbors
         self.costs = costs 
         self.partitions = [] #list of partition is include on (one peer data)
         self.source_of = [] #binary vectore to say if this node is a source to the i-th data 
-        self.all_costs = {}
+        self.all_costs = {} #vector of all costs for all the data
         self.addr_ip = addr
         self.port = port
         self.running = False
-        self.server_socket = None
         self.context = None
         self.dealer_socket = None
-        self.router_socket = None
         self.total_memorie = total_memorie
         self.ocuped_space = 0
-        self.dealer = zmq
+        self.nb_neighbords = len(neighbors.keys())
+
 
     def start(self):
         """
@@ -43,27 +42,24 @@ class Actor:
 
         self.context = zmq.Context()
 
-        # deploy a peer on the site with this port
-        self.router_socket = self.context.socket(zmq.ROUTER)
-        self.router_socket.bind(f"tcp://*:{self.port}")  # Bind to port for others to connect
+        # Dealer socket for sending messages
+        self.dealer_socket = self.context.socket(zmq.DEALER)
+        self.dealer_socket.identity = b""+self.id  # Set unique identity
 
         for key in self.neighbors.keys():
-            # Dealer socket for sending messages
-            self.dealer_socket = self.context.socket(zmq.DEALER)
-            self.dealer_socket.identity = b""+self.id  # Set unique identity
+            
 
-            connected = self.dealer_socket.connect(f"tcp://{self.neighbors["key"][0]}:{self.neighbors["key"][1]}")  # Connect to all Peers' routers
-            print(f"Peer 1 connected: {connected}")
+            connected = self.dealer_socket.connect(f"tcp://{self.neighbors["key"][0]}:{self.neighbors["key"][1]}")  
+            print(f"Peer 1 connected with: {connected}")
 
-            #Hello message to all the peers
-            message = "Hello peer !!".encode()
-            self.dealer_socket.send(message) 
+            self.dealer_socket.send_multipart(["connexion".encode()])
 
 
     def run(self,):
 
         poller = zmq.Poller()
         poller.register(self.dealer_socket, zmq.POLLIN) 
+
         while True:
             events = dict(poller.poll(timeout=0))  # Wait for 1 second (adjustable)
             
@@ -74,16 +70,13 @@ class Actor:
                         
                         if len(message) == 1:
                             continue
-                        if (message[1].decode() == "None"):
-                            for i in range(2):
-                                self.dealer_socket.send_multipart([self.dealer_socket.identity,message[0],message[2]])
+
+                        elif  (message[1].decode() != self.dealer_socket.identity.decode()):
+                            pass
+                            msg = pickle.loads(message[2])
+
+                            self._processMessage(msg)
                             
-                        else:
-                            if (message[1].decode() != self.dealer_socket.identity.decode()):
-                                print(f"Received {message[2].decode()} from {message[0].decode}")
-                                
-                                for i in range(2):
-                                    self.dealer_socket.send_multipart([self.dealer_socket.identity,message[0],message[2]])
 
     def stop(self):
         """
@@ -93,11 +86,12 @@ class Actor:
 
         self.context.term()
 
-    def processMessage(self,message:Message):
+    
+    def _processMessage(self,message:Message):
         #if the message is a delete do this
         if isinstance(message, Delete):
+            self.recievedDelete(Delete)
             #process the message here
-            
             self.forwardRecievedMessage(message)
 
         #if the message is an add do this 
@@ -105,8 +99,8 @@ class Actor:
             #process the message here
             self.respondToMessage(message)
         
-            self.forwardRecievedMessage(message)
-
+        if isinstance(message, ReplayMessag):
+            pass
         pass    
 
     def respondToMessage(self,message):
@@ -119,7 +113,7 @@ class Actor:
         pass 
         
 
-
+    
     def recievedAdd(self, message:Add,):
 
         """
@@ -127,18 +121,25 @@ class Actor:
             she take only the message as a function
         """
         
-        if self.source_of[message.id_data] == 0:
+        if self.source_of[message.id_data] == 0 and self.costs[message.id_data] < message.cost:
             self.costs[message.id_data] = message.cost
+            self.forwardRecievedMessage(message)
+
             return True
         else:
-            if self.costs[message.id_data] < message.cost:
-                self.costs[message.id_data] = message.cost
+            return False
 
-                self.forwardRecievedMessage(message)
-                return True
-            else:
-                return False
-                
+    def recievedDelete(self, message:Delete):
+
+        if self.source_of[message.id_data] == 0 and self.costs[message.id_data] < message.cost:
+            self.costs[message.id_data] = message.cost
+            self.forwardRecievedMessage(message)
+            
+            return True
+        else:
+            return False
+        
+
     def forwardRecievedMessage(self, message):
         """
             #TODO: here i need to add something because the message is sent to all peers 
@@ -148,9 +149,10 @@ class Actor:
         """
         #serialize the object
         data = pickle.dumps(message)
-
-        multi_part_message = ["all".encode() ,data]
-        self.dealer_socket.send_multipart(multi_part_message)
+    
+        message_to_send = [self.dealer_socket.identity,message[0],data]
+        for i in range(self.nb_neighbords):
+            self.dealer_socket.send_multipart([])
 
     
 
@@ -185,34 +187,3 @@ class Actor:
         )
 
         pass
-
-    """
-    #serialize and send the message to all peers
-    def sendObject(obj:object, ip:str):
-        #serialize the object
-        data = pickle.dumps(obj)
-
-        # Envoi via un socket
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-            s.connect((ip, PORT_FOR_SENDING_DATA))
-            s.sendall(data)
-        
-        return True
-
-
-
-    def recieveObject(ip:str):
-
-        # Créer un socket
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-            s.bind((ip, PORT_FOR_SENDING_DATA))
-            s.listen()
-            #attendre une connexion
-            conn, addr = s.accept()
-            
-            data = conn.recvall()
-            
-            objet_recu = pickle.loads(data)
-        
-        return objet_recu
-    """

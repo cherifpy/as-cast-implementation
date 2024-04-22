@@ -3,8 +3,8 @@ import socket
 
 PORT_FOR_SENDING_DATA = 12345
 
-"""
-Changement de plans fichier a supprimer
+""" 
+    J'aurais besoin de ca pour envoyer les données vers chaqu'un des nodes au debut de l'exp
 
 """
 
