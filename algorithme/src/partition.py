@@ -14,6 +14,10 @@ class Partition:
         self.partition_name = partition_name
         self.id_data = None
         self.nodes = []
+        self.nb_access_to_obj = 0
+    
+
+
 
     def addActor(self, node: Actor):
         self

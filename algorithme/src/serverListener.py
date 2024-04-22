@@ -1,6 +1,11 @@
 import socket
 import threading
 
+"""
+    pas besoin puique j'utilise ZMQ
+"""
+
+
 class ListenerServer:
 
     """A class representing a listener server."""
@@ -25,9 +30,7 @@ class ListenerServer:
         self.listen_for_connections()
 
     def listen_for_connections(self):
-        """
-            Listens for incoming connections on a separate thread.
-        """
+        
 
         while self.running:
             conn, addr = self.server_socket.accept()
@@ -35,9 +38,6 @@ class ListenerServer:
             client_thread.start()
 
     def handle_client(self, conn, addr):
-        """
-            Handles a client connection by receiving and responding to messages.
-        """
 
         print(f"Connected by {addr}")
         while True:
@@ -50,9 +50,7 @@ class ListenerServer:
             conn.close()
 
     def stop(self):
-        """
-            Stops the server by closing the socket and setting the running flag to False.
-        """
+
 
         self.running = False
         self.server_socket.close()

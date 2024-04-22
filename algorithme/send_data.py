@@ -3,8 +3,13 @@ import socket
 
 PORT_FOR_SENDING_DATA = 12345
 
+"""
+Changement de plans fichier a supprimer
+
+"""
+
 def sendObject(obj:object, ip:str):
-    
+    #serialize the object
     data = pickle.dumps(obj)
 
     # Envoi via un socket
@@ -22,15 +27,11 @@ def recieveObject(ip:str):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.bind((ip, PORT_FOR_SENDING_DATA))
         s.listen()
-
-        # Attendre une connexion
+        #attendre une connexion
         conn, addr = s.accept()
-
-        # Recevoir les données sérialisées
+        
         data = conn.recvall()
-
-        # Désérialiser l'objet
+        
         objet_recu = pickle.loads(data)
-
-        # Traiter l'objet reçu
+       
         return objet_recu

@@ -11,19 +11,19 @@ import time
 """
 
 class Message(object):
-    def __init__(self,type,sender):
+    def __init__(self,type,forward_from):
         self.type = type
         self.time = time.time() 
-        self.sender = sender
+        self.forward_from = forward_from
 
 class Delete(Message):
-    def __init__(self, id_sender:int, sender:str, id_data:int):
+    def __init__(self, id_sender:int, sender:str, id_data:int,forward_from):
         super().__init__("delete", sender)
         self.id_sender = id_sender
         self.id_data = id_data
 
 class Add(Message):
-    def __init__(self, id_sender:int, sender:str, cost:float, id_data:int):
+    def __init__(self, id_sender:int, sender:str, cost:float, id_data:int,forward_from):
         super().__init__("add", sender)
         self.id_sender = id_sender
         self.cost = cost
@@ -32,9 +32,10 @@ class Add(Message):
 class Refuse(Message):
     def __init__(self, type, sender):
         super().__init__(type, sender)
-        
-class DoYouNeedReplica(Message):
-    def __init__(self):
-        pass
+
+class Blocked(Message):
+    def __init__(self, type, sender):
+        super().__init__(type, sender)
+
 
 
