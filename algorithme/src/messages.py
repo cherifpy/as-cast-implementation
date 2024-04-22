@@ -24,11 +24,12 @@ class Delete(Message):
         self.id_data = id_data
 
 class Add(Message):
-    def __init__(self, id_sender:int, sender:str, cost:float, id_data:int,forward_from):
+    def __init__(self, id_sender:int, sender:str, cost:float, id_data:int,id_source):
         super().__init__("add", sender)
         self.id_sender = id_sender
         self.cost = cost
         self.id_data = id_data
+        self.id_source = id_source
 
 class ReplayMessag(Message):
     def __init__(self, type, forward_from, destination, sender):

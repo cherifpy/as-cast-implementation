@@ -40,8 +40,4 @@ network_constraints:
         delay: 30ms
         symmetric: True
 
-packages:
-  - flent
-  - netperf
-  - python3-setuptools
 

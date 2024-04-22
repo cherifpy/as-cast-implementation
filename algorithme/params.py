@@ -1,0 +1,2 @@
+NB_DATAS = 2
+NB_NODES = 10

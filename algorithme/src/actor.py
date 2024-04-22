@@ -5,7 +5,8 @@ import zmq
 import time
 import pickle
 from partition import Partition
-
+from params import NB_DATAS, NB_NODES
+import copy
 """
     this class is an implementation of an actor using PyKKA modul
 """
@@ -19,12 +20,13 @@ class Actor:
         self.min_cout = sys.maxsize
         self.actual_source = None
         self.is_source = False
-        self.id = f"{id}"
+        #self.id = f"{id}"
         self.neighbors = neighbors
         self.costs = costs 
-        self.partitions = [] #list of partition is include on (one peer data)
-        self.source_of = [] #binary vectore to say if this node is a source to the i-th data 
+        self.partitions = [None for i in range(NB_DATAS)] #list of partition is include on (one peer data)
+        self.source_of = [0 for i in range(NB_DATAS)] #binary vectore to say if this node is a source to the i-th data 
         self.all_costs = {} #vector of all costs for all the data
+        self.hstoric = [None for i in range(NB_DATAS)]
         self.addr_ip = addr
         self.port = port
         self.running = False
@@ -44,7 +46,7 @@ class Actor:
 
         # Dealer socket for sending messages
         self.dealer_socket = self.context.socket(zmq.DEALER)
-        self.dealer_socket.identity = b""+self.id  # Set unique identity
+        self.dealer_socket.identity = b""+self.site  # Set unique identity
 
         for key in self.neighbors.keys():
             
@@ -70,8 +72,8 @@ class Actor:
                         
                         if len(message) == 1:
                             continue
-
-                        elif  (message[1].decode() != self.dealer_socket.identity.decode()):
+                        
+                        elif  (message[2].decode() != self.site):
                             pass
                             msg = pickle.loads(message[2])
 
@@ -97,12 +99,15 @@ class Actor:
         #if the message is an add do this 
         if isinstance(message, Add):
             #process the message here
-            self.respondToMessage(message)
+            self.recievedAdd(message)
         
         if isinstance(message, ReplayMessag):
             pass
-        pass    
 
+        return False    
+
+
+    # ithnk no need for this function 
     def respondToMessage(self,message):
         #if the message is an add do this 
         if isinstance(message, Add):
@@ -123,7 +128,19 @@ class Actor:
         
         if self.source_of[message.id_data] == 0 and self.costs[message.id_data] < message.cost:
             self.costs[message.id_data] = message.cost
-            self.forwardRecievedMessage(message)
+
+            
+            for i in range(self.nb_neighbords):
+
+                tmp = copy.deepcopy(message)
+                tmp.cost += self.costs[i]
+                tmp.id_sender = self.site
+                #serialize the object
+            
+                data = pickle.dumps(tmp)
+                message_to_send = [self.dealer_socket.identity,message.id_sender,data]
+
+                self.dealer_socket.send_multipart(message_to_send)
 
             return True
         else:
@@ -131,28 +148,30 @@ class Actor:
 
     def recievedDelete(self, message:Delete):
 
-        if self.source_of[message.id_data] == 0 and self.costs[message.id_data] < message.cost:
-            self.costs[message.id_data] = message.cost
-            self.forwardRecievedMessage(message)
-            
-            return True
-        else:
-            return False
-        
+        """
+            i need to add a list to store all the previous ADD messages
+        """
 
+
+        pass
+        
+    #maybe no need for this function too
     def forwardRecievedMessage(self, message):
         """
-            #TODO: here i need to add something because the message is sent to all peers 
-            Whene i forward the message it will be sent to all peers connected to, i added 'all' to say
-            that this message is distinated to all my neighbords
-            here the function send
+            
         """
-        #serialize the object
-        data = pickle.dumps(message)
-    
-        message_to_send = [self.dealer_socket.identity,message[0],data]
+        
+
         for i in range(self.nb_neighbords):
-            self.dealer_socket.send_multipart([])
+            tmp = copy.deepcopy(message)
+            tmp.cost += self.costs[i]
+            
+            #serialize the object
+        
+            data = pickle.dumps(message)
+            message_to_send = [self.dealer_socket.identity,message[0],data]
+
+            self.dealer_socket.send_multipart(message_to_send)
 
     
 
@@ -165,17 +184,17 @@ class Actor:
         )
 
         #TODO the cost ???? 
-        cost = 0.25657445
-        add_message = Add(
-            id_sender = self.id,
-            sender=self.id,
-            cost= cost,
-        )
 
-        if self.forwardRecievedMessage(message=add_message):
-            return True
-        else:
-            return False
+        
+        for i in range(self.nb_neighbords):
+            add_message = Add(
+                id_sender = self.id,
+                sender=self.id,
+                cost= self.costs[i],
+                id_source = self.site
+            )
+            message = pickle.dump(add_message)
+            self.dealer_socket.send_multipart([self.site.encode(),"None".encode(),message])
 
 
     def deletePartition(self, partition:Partition):
