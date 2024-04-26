@@ -14,7 +14,7 @@ import copy
 
 class Actor:
 
-    def __init__(self,id:str, site:str, costs:list, addr:str, port:int,total_memorie, neighbors:dict):
+    def __init__(self,id:str, site:str, costs:list, addr:str, port:int,total_memorie, neighbors:dict,sub_port:int):
         self.site = site
         self.state = None
         self.min_cout = sys.maxsize
@@ -35,7 +35,7 @@ class Actor:
         self.total_memorie = total_memorie
         self.ocuped_space = 0
         self.nb_neighbords = len(neighbors.keys())
-
+        self.sub_port = sub_port
 
     def start(self):
         """
@@ -58,7 +58,10 @@ class Actor:
 
 
     def run(self,):
-
+        """
+            a supprimer: code de la function depacer vers le fichier as-cast
+        
+        """
         poller = zmq.Poller()
         poller.register(self.dealer_socket, zmq.POLLIN) 
 
@@ -77,7 +80,7 @@ class Actor:
                             pass
                             msg = pickle.loads(message[2])
 
-                            self._processMessage(msg)
+                            self.processMessage(msg)
                             
 
     def stop(self):
@@ -89,7 +92,7 @@ class Actor:
         self.context.term()
 
     
-    def _processMessage(self,message:Message):
+    def processMessage(self,message:Message):
         #if the message is a delete do this
         if isinstance(message, Delete):
             self.recievedDelete(Delete)
@@ -151,8 +154,6 @@ class Actor:
         """
             i need to add a list to store all the previous ADD messages
         """
-
-
         pass
         
     #maybe no need for this function too
@@ -160,8 +161,6 @@ class Actor:
         """
             
         """
-        
-
         for i in range(self.nb_neighbords):
             tmp = copy.deepcopy(message)
             tmp.cost += self.costs[i]
@@ -194,8 +193,20 @@ class Actor:
                 id_source = self.site
             )
             message = pickle.dump(add_message)
-            self.dealer_socket.send_multipart([self.site.encode(),"None".encode(),message])
+            self.sendForward(message)
 
+    def sendForward(self,message):
+        context = zmq.Context()
+
+        pub_address = f"tcp://*:{self.pub_port}"
+        pub = context.socket(zmq.PUB)
+        pub.bind(pub_address)
+    
+        pub.send("connexion...".encode())
+        
+        time.sleep(0.01)
+
+        pub.send(message) 
 
     def deletePartition(self, partition:Partition):
 

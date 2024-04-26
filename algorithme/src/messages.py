@@ -16,6 +16,9 @@ class Message(object):
         self.time = time.time() 
         self.forward_from = forward_from
 
+    def __str__(self) -> str:
+        return f"type: {self.type} from: {self.forward_from} time: {self.time}"
+
 
 class Delete(Message):
     def __init__(self, id_sender:int, sender:str, id_data:int,forward_from):
