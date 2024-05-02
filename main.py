@@ -57,28 +57,28 @@ if __name__ == "__main__":
         print("node========")
         print(datas)
         
-        #with config.enoslib.actions(roles=config.roles[machine["roles"][0]]) as p:
-        """config.enoslib.run_command(
-            "rm -rf as-cast-implementation",
-            roles=config.roles[machine["roles"][0]]
-        )
-        config.enoslib.run_command(
-            "git clone https://github.com/cherifpy/as-cast-implementation.git",
-            roles=config.roles[machine["roles"][0]]
-        )"""
-        config.enoslib.run_command(
-            "cd /as-cast-implementation/algorithme",
-            roles=config.roles[machine["roles"][0]]
-        )
-        config.enoslib.run_command(
-            "pip install -r ../requirements.txt",
-            roles=config.roles[machine["roles"][0]]
-        )
+        with config.enoslib.actions(roles=config.roles[machine["roles"][0]]) as p:
+            """config.enoslib.run_command(
+                "rm -rf as-cast-implementation",
+                roles=config.roles[machine["roles"][0]]
+            )
+            config.enoslib.run_command(
+                "git clone https://github.com/cherifpy/as-cast-implementation.git",
+                roles=config.roles[machine["roles"][0]]
+            )"""
+            config.enoslib.run_command(
+                "cd /as-cast-implementation/algorithme",
+                roles=config.roles[machine["roles"][0]]
+            )
+            config.enoslib.run_command(
+                "pip install -r ../requirements.txt",
+                roles=config.roles[machine["roles"][0]]
+            )
 
-        config.enoslib.run_command(
-            f"python as-cast.py {i} {port_pub} {port_sub}",
-            roles=config.roles[machine["roles"][0]]
-        )
+            config.enoslib.run_command(
+                f"python as-cast.py {i} {port_pub} {port_sub}",
+                roles=config.roles[machine["roles"][0]]
+            )
             
         """
         p.command(
