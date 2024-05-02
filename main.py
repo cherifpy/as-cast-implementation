@@ -80,8 +80,8 @@ if __name__ == "__main__":
             port_pub += 1
 
             #send data to site i
-            sendObject(datas, ips_address[i])
-
+    for i, machine in enumerate(config.machines):
+        sendObject(datas, ips_address[i])
 
 
     
