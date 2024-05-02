@@ -4,9 +4,10 @@ import requests
 import json
 import time
 import enoslib as en
+import logging 
 
 class Configuration:
-    def __init__(self,logging=None, cluster = None, config_file_path="/"):
+    def __init__(self, cluster = None, config_file_path="/"):
         """
             classe constructor is used to create an instence of the class
             i dont know if i have to remove the param = cluster
@@ -28,7 +29,8 @@ class Configuration:
         self.sites = [machine["roles"][0] for machine in self.machines]
         self.roles = None
         self.contraintes = self.parametres.get('network_constraints',[{}])[0].get("constraints")
-
+        self.enoslib.init_logging(level=logging.DEBUG)
+        self.enoslib.check()
         self.nb_sites = len(self.machines)
 
     
