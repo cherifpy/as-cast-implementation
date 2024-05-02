@@ -43,6 +43,7 @@ if __name__ == "__main__":
     port_pub = 5454
 
     with config.enoslib.actions(roles=config.roles) as p:
+        p.apt(name=["libssl-dev", "libz-dev", "liblua5.2-dev", "luarocks", "git"], state="present", update_cache=True)
         p.command(
             task_name = "Delete the last version of the repo",
             cmd = "rm -rf as-cast-implementation"
