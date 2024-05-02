@@ -67,7 +67,7 @@ if __name__ == "__main__":
                 roles=config.roles[machine["roles"][0]]
             )"""
             config.enoslib.run_command(
-                "cd /as-cast-implementation/algorithme",
+                "cd as-cast-implementation/algorithme",
                 roles=config.roles[machine["roles"][0]]
             )
             config.enoslib.run_command(
