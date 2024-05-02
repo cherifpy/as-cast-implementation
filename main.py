@@ -53,17 +53,18 @@ if __name__ == "__main__":
                 task_name = "Delete the last version of the repo",
                 cmd = "rm -rf as-cast-implementation"
             )
-            print("happend")
+            print("Previous version deleted")
             p.command(
                 task_name  = "Cloning the project on the site",
                 cmd = "git clone https://github.com/cherifpy/as-cast-implementation.git"
             )
-            p.command(cmd="cd as-cast-implmentation")
+            p.command(cmd="cd as-cast-implementation")
+
             p.command(
                 task_name  = "Installing required python libraries",
-                cmd = "pip install -r requirements.text"
+                cmd = "pip install -r requirements.txt"
             )
-            p.row("cd algorithme")
+            p.command(cmd="cd algorithme")
             p.command(
                 task_name  = "execute as-cast on the site",
                 cmd = f"python as-cast.py {i} {port_pub} {port_sub}"
@@ -79,7 +80,7 @@ if __name__ == "__main__":
             port_sub += 1
             port_pub += 1
 
-            #send data to site i
+    #send data to all nodes
     for i, machine in enumerate(config.machines):
         sendObject(datas, ips_address[i])
 
