@@ -48,7 +48,7 @@ if __name__ == "__main__":
             task_name = "Delete the last version of the repo",
             cmd = "rm -rf as-cast-implementation"
         )
-        p.git(repo="https://github.com/cherifpy/as-cast-implementation.git", dest="home/csimohammed/")
+        p.git(repo="https://github.com/cherifpy/as-cast-implementation.git", dest="/")
 
     for i, machine in enumerate(config.machines):
 
@@ -67,7 +67,7 @@ if __name__ == "__main__":
             roles=config.roles[machine["roles"][0]]
         )"""
         config.enoslib.run_command(
-            "cd home/csimohammed/as-cast-implementation/algorithme",
+            "cd /as-cast-implementation/algorithme",
             roles=config.roles[machine["roles"][0]]
         )
         config.enoslib.run_command(
