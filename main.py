@@ -41,7 +41,7 @@ if __name__ == "__main__":
     # init an actor on each site
     port_sub = 5554
     port_pub = 5454
-
+    """
     with config.enoslib.actions(roles=config.roles) as p:
         p.apt(name=["libssl-dev", "libz-dev", "liblua5.2-dev", "luarocks", "git"], state="present", update_cache=True)
         p.command(
@@ -49,7 +49,7 @@ if __name__ == "__main__":
             cmd = "rm -rf as-cast-implementation"
         )
         p.git(repo="https://github.com/cherifpy/as-cast-implementation.git", dest="/")
-
+    """
     for i, machine in enumerate(config.machines):
 
         #add latency to the neighbores
