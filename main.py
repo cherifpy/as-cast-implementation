@@ -67,14 +67,14 @@ if __name__ == "__main__":
             roles=config.roles[machine["roles"][0]]
         )"""
         config.enoslib.run_command(
-            "cd as-cast-implementation/algorithme",
+            "cd home/csimohammed/as-cast-implementation/algorithme",
             roles=config.roles[machine["roles"][0]]
         )
         config.enoslib.run_command(
             "pip install -r ../requirements.txt",
             roles=config.roles[machine["roles"][0]]
         )
-        
+
         config.enoslib.run_command(
             f"python as-cast.py {i} {port_pub} {port_sub}",
             roles=config.roles[machine["roles"][0]]
