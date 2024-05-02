@@ -82,16 +82,16 @@ class Configuration:
         else:
             #get the IP address of a specific node on a machine
             machine = self.roles[role][node-1]
-            
+        print(machine)
         ip_address = machine.filter_addresses(networks=self.networks["prod"])[0]
 
         return str(ip_address.ip.ip)
     
-    def getAllIPs(self):
+    def getAllIPs(self): 
         ips = []
         for i, role in enumerate(self.roles):
-            self.getIpAddress(role)
-            ips.append()
+            ip = self.getIpAddress(role)
+            ips.append(ip)
         return ips
 
     #Not tested yes
