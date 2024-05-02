@@ -48,7 +48,7 @@ if __name__ == "__main__":
             task_name = "Delete the last version of the repo",
             cmd = "rm -rf as-cast-implementation"
         )
-        p.git(repo="git clone https://github.com/cherifpy/as-cast-implementation.git", dest="home/csimohammed/")
+        p.git(repo="https://github.com/cherifpy/as-cast-implementation.git", dest="home/csimohammed/")
 
     for i, machine in enumerate(config.machines):
 
