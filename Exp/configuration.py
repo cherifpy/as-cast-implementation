@@ -78,11 +78,11 @@ class Configuration:
         """
         if node == None:
             #get the IP address of a machine    
-            machine = self.roles[role]
+            machine = self.roles[role][0]
         else:
             #get the IP address of a specific node on a machine
             machine = self.roles[role][node-1]
-        print(machine)
+        #print(machine)
         ip_address = machine.filter_addresses(networks=self.networks["prod"])[0]
 
         return str(ip_address.ip.ip)
