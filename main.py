@@ -53,6 +53,7 @@ if __name__ == "__main__":
                 task_name = "Delete the last version of the repo",
                 cmd = "rm -rf as-cast-implementation"
             )
+            print("happend")
             p.command(
                 task_name  = "Cloning the project on the site",
                 cmd = "git clone https://github.com/cherifpy/as-cast-implementation.git"
