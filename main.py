@@ -34,6 +34,7 @@ if __name__ == "__main__":
         "graphe" : graphe
     }
 
+
     #i have to send all the files to all sites
     #execute them on each site
 
@@ -44,6 +45,7 @@ if __name__ == "__main__":
 
         #add latency to the neighbores
         datas["neighbors"] = graphe[i]
+        print("node========")
         print(datas)
         """
         with config.enoslib.actions(roles=config.roles[machine["roles"][0]]) as p:
