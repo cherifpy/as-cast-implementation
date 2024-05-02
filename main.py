@@ -41,6 +41,14 @@ if __name__ == "__main__":
     # init an actor on each site
     port_sub = 5554
     port_pub = 5454
+
+    with config.enoslib.actions(roles=config.roles) as p:
+        p.command(
+            task_name = "Delete the last version of the repo",
+            cmd = "rm -rf as-cast-implementation"
+        )
+        p.git(repo="git clone https://github.com/cherifpy/as-cast-implementation.git")
+
     for i, machine in enumerate(config.machines):
 
         #add latency to the neighbores
@@ -49,14 +57,14 @@ if __name__ == "__main__":
         print(datas)
         
         #with config.enoslib.actions(roles=config.roles[machine["roles"][0]]) as p:
-        config.enoslib.run_command(
+        """config.enoslib.run_command(
             "rm -rf as-cast-implementation",
             roles=config.roles[machine["roles"][0]]
         )
         config.enoslib.run_command(
             "git clone https://github.com/cherifpy/as-cast-implementation.git",
             roles=config.roles[machine["roles"][0]]
-        )
+        )"""
         config.enoslib.run_command(
             "pip install -r as-cast-implementation/requirements.txt",
             roles=config.roles[machine["roles"][0]]
