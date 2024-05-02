@@ -1,7 +1,7 @@
 ---
 job_name: test_conf
 exp_env: debian11-min
-exp_walltime: 0:30:00
+exp_walltime: 0:50:00
 machines:
   - cluster: paravance
     nodes: 1
@@ -15,28 +15,20 @@ machines:
     nodes: 1
     roles: [Qbox1]
     storage: 120
-  - cluster: paravance
-    nodes: 1
-    roles: [Qbox2]
-    storage: 120
-  - cluster: paravance
-    nodes: 1
-    roles: [Qbox2]
-    storage: 120
 network_constraints:
   - default_delay: 20ms
     default_rate: 1gbit
     constraints: 
-      - src: site1 
-        dst: site2
+      - src: Qnode1 
+        dst: Qnode2
         delay: 10ms
         symmetric: True
-      - src: site1 
-        dst: site3
+      - src: Qnode1 
+        dst: Qbox1
         delay: 15ms
         symmetric: True
-      - src: site2 
-        dst: site3
+      - src: Qnode2 
+        dst: Qbox1
         delay: 30ms
         symmetric: True
 

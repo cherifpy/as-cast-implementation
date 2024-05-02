@@ -29,7 +29,7 @@ class Configuration:
         self.sites = [machine["roles"][0] for machine in self.machines]
         self.roles = None
         self.contraintes = self.parametres.get('network_constraints',[{}])[0].get("constraints")
-        self.enoslib.init_logging(level=logging.DEBUG)
+        self.enoslib.init_logging(level=logging.INFO)
         self.enoslib.check()
         self.nb_sites = len(self.machines)
 
@@ -56,7 +56,7 @@ class Configuration:
 
         self.roles, self.networks = self.provider.init()
         self.roles = self.enoslib.sync_info(self.roles, self.networks)
-
+        print("Reservation done !")
         return self.provider
 
     def setNetworkConstraintes(self):
