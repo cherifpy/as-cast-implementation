@@ -58,10 +58,14 @@ if __name__ == "__main__":
             p.command(cmd="cd as-cast-implmentation")
             p.command(
                 task_name  = "Installing required python libraries",
-                cmd = "pip install -r requirements.py"
+                cmd = "pip install -r requirements.text"
             )
             p.row("cd algorithme")
 
+            p.command(
+                task_name  = "execute as-cast on the site",
+                cmd = f"python as-cast.py {i} {ips_address[i]} {port_pub} {port_sub}"
+            )
             p.command(
                 task_name  = "execute as-cast on the site",
                 cmd = f"python as-cast.py {i} {ips_address[i]} {port_pub} {port_sub}"
