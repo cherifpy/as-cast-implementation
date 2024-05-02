@@ -66,6 +66,11 @@ if __name__ == "__main__":
                 "git clone https://github.com/cherifpy/as-cast-implementation.git",
                 roles=config.roles[machine["roles"][0]]
             )"""
+
+            config.enoslib.run_command(
+                "git clone https://github.com/cherifpy/as-cast-implementation.git",
+                roles=config.roles[machine["roles"][0]]
+            )
             config.enoslib.run_command(
                 "cd as-cast-implementation/algorithme",
                 roles=config.roles[machine["roles"][0]]
