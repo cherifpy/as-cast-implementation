@@ -48,9 +48,9 @@ if __name__ == "__main__":
             task_name = "Delete the last version of the repo",
             cmd = "rm -rf as-cast-implementation"
         )
-        p.git(repo="https://github.com/cherifpy/as-cast-implementation.git", dest="/")
+        p.git(repo="https://github.com/cherifpy/as-cast-implementation.git", dest="/tmp/dsb")
         print("navigating to as-cast-implementation")
-        p.command(cmd="cd as-cast-implementation")
+        p.command(cmd="cd tmp/dsb/as-cast-implementation")
         print("installing requirements on requirements.txt")
         p.command(
             task_name  = "Installing required python libraries",
