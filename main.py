@@ -48,40 +48,56 @@ if __name__ == "__main__":
         print("node========")
         print(datas)
         
-        with config.enoslib.actions(roles=config.roles[machine["roles"][0]]) as p:
-            p.command(
-                task_name = "Delete the last version of the repo",
-                cmd = "rm -rf as-cast-implementation"
-            )
-            print("Previous version deleted")
-            p.command(
-                task_name  = "Cloning the project on the site",
-                cmd = "git clone https://github.com/cherifpy/as-cast-implementation.git"
-            )
-            print("navigating to as-cast-implementation")
-            p.command(cmd="cd as-cast-implementation")
-            print("installing requirements on requirements.txt")
-            p.command(
-                task_name  = "Installing required python libraries",
-                cmd = "pip install -r requirements.txt"
-            )
-            print("lets go to the as-cast file")
-            p.command(cmd="cd algorithme")
-            print("time to see what happend !!!")
-            p.command(
-                task_name  = "execute as-cast on the site",
-                cmd = f"python as-cast.py {i} {port_pub} {port_sub}"
-            )
-            """p.command(
-                task_name  = "execute as-cast on the site",
-                cmd = f"python as-cast.py {i} {ips_address[i]} {port_pub} {port_sub}"
-            )
-            p.command(
-                task_name  = "execute as-cast on the site",
-                cmd = f"python as-cast.py {i} {ips_address[i]} {port_pub} {port_sub}"
-            )"""
-            port_sub += 1
-            port_pub += 1
+        #with config.enoslib.actions(roles=config.roles[machine["roles"][0]]) as p:
+        config.enoslib.run_command(
+            "rm -rf as-cast-implementation",
+            roles=config.roles[machine["roles"][0]]
+        )
+        config.enoslib.run_command(
+            "git clone https://github.com/cherifpy/as-cast-implementation.git",
+            roles=config.roles[machine["roles"][0]]
+        )
+        config.enoslib.run_command(
+            "pip install -r as-cast-implementation/requirements.txt",
+            roles=config.roles[machine["roles"][0]]
+        )
+        config.enoslib.run_command(
+            "cd as-cast-implementation/algorithme",
+            roles=config.roles[machine["roles"][0]]
+        )
+        config.enoslib.run_command(
+            f"python as-cast.py {i} {port_pub} {port_sub}",
+            roles=config.roles[machine["roles"][0]]
+        )
+            
+        """
+        p.command(
+            task_name = "Delete the last version of the repo",
+            cmd = "rm -rf as-cast-implementation"
+        )
+        print("Previous version deleted")
+        p.command(
+            task_name  = "Cloning the project on the site",
+            cmd = "git clone https://github.com/cherifpy/as-cast-implementation.git"
+        )
+        print("navigating to as-cast-implementation")
+        p.command(cmd="cd as-cast-implementation")
+        print("installing requirements on requirements.txt")
+        p.command(
+            task_name  = "Installing required python libraries",
+            cmd = "pip install -r requirements.txt"
+        )
+        print("lets go to the as-cast file")
+        p.command(cmd="cd algorithme")
+        print("time to see what happend !!!")
+        p.command(
+            task_name  = "execute as-cast on the site",
+            cmd = f"python as-cast.py {i} {port_pub} {port_sub}"
+        )
+        """
+           
+        port_sub += 1
+        port_pub += 1
 
     #send data to all nodes
     for i, machine in enumerate(config.machines):
