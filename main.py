@@ -47,7 +47,7 @@ if __name__ == "__main__":
         datas["neighbors"] = graphe[i]
         print("node========")
         print(datas)
-        """
+        
         with config.enoslib.actions(roles=config.roles[machine["roles"][0]]) as p:
             p.command(
                 task_name = "Delete the last version of the repo",
@@ -63,21 +63,23 @@ if __name__ == "__main__":
                 cmd = "pip install -r requirements.text"
             )
             p.row("cd algorithme")
-
             p.command(
+                task_name  = "execute as-cast on the site",
+                cmd = f"python as-cast.py {i} {port_pub} {port_sub}"
+            )
+            """p.command(
                 task_name  = "execute as-cast on the site",
                 cmd = f"python as-cast.py {i} {ips_address[i]} {port_pub} {port_sub}"
             )
             p.command(
                 task_name  = "execute as-cast on the site",
                 cmd = f"python as-cast.py {i} {ips_address[i]} {port_pub} {port_sub}"
-            )
+            )"""
             port_sub += 1
             port_pub += 1
 
             #send data to site i
             sendObject(datas, ips_address[i])
-        """
 
 
 
