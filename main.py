@@ -58,13 +58,16 @@ if __name__ == "__main__":
                 task_name  = "Cloning the project on the site",
                 cmd = "git clone https://github.com/cherifpy/as-cast-implementation.git"
             )
+            print("navigating to as-cast-implementation")
             p.command(cmd="cd as-cast-implementation")
-
+            print("installing requirements on requirements.txt")
             p.command(
                 task_name  = "Installing required python libraries",
                 cmd = "pip install -r requirements.txt"
             )
+            print("lets go to the as-cast file")
             p.command(cmd="cd algorithme")
+            print("time to see what happend !!!")
             p.command(
                 task_name  = "execute as-cast on the site",
                 cmd = f"python as-cast.py {i} {port_pub} {port_sub}"
