@@ -1,11 +1,12 @@
 import sys
 from .messages import Add, Delete, Message, ReplayMessag
+from cache import Cache
+from partition import Partition
+from params import NB_DATAS, NB_NODES
 import numpy as np
 import zmq
 import time
 import pickle
-from partition import Partition
-from params import NB_DATAS, NB_NODES
 import copy
 """
     this class is an implementation of an actor using PyKKA modul
@@ -14,7 +15,7 @@ import copy
 
 class Actor:
 
-    def __init__(self,id:str, site:str, costs:list, addr:str, port:int,total_memorie, neighbors:dict,sub_port:int):
+    def __init__(self,id:str, site:str, costs:list, total_memorie, neighbors:dict,sub_port:int):
         self.site = site
         self.state = None
         self.min_cout = sys.maxsize
@@ -27,16 +28,15 @@ class Actor:
         self.source_of = [0 for i in range(NB_DATAS)] #binary vectore to say if this node is a source to the i-th data 
         self.all_costs = {} #vector of all costs for all the data
         self.hstoric = [None for i in range(NB_DATAS)]
-        self.addr_ip = addr
-        self.port = port
         self.running = False
         self.context = None
-        self.dealer_socket = None
+        self.sub_socket = None
         self.total_memorie = total_memorie
         self.ocuped_space = 0
         self.nb_neighbords = len(neighbors.keys())
         self.sub_port = sub_port
-
+        self.cache = None
+        
     def start(self):
         """
             Starts the server by creating a socket and listening for connections.
@@ -45,16 +45,16 @@ class Actor:
         self.context = zmq.Context()
 
         # Dealer socket for sending messages
-        self.dealer_socket = self.context.socket(zmq.DEALER)
-        self.dealer_socket.identity = b""+self.site  # Set unique identity
+        self.sub_socket = self.context.socket(zmq.SUB)
+        self.sub_socket.identity = b""+self.site  # Set unique identity
 
         for key in self.neighbors.keys():
             
 
-            connected = self.dealer_socket.connect(f"tcp://{self.neighbors["key"][0]}:{self.neighbors["key"][1]}")  
+            connected = self.sub_socket.connect(f"tcp://{self.neighbors["key"][0]}:{self.neighbors["key"][1]}")  
             print(f"Peer 1 connected with: {connected}")
 
-            self.dealer_socket.send_multipart(["connexion".encode()])
+            self.sub_socket.send_multipart(["connexion".encode()])
 
 
     def run(self,):
@@ -63,15 +63,15 @@ class Actor:
         
         """
         poller = zmq.Poller()
-        poller.register(self.dealer_socket, zmq.POLLIN) 
+        poller.register(self.sub_socket, zmq.POLLIN) 
 
         while True:
             events = dict(poller.poll(timeout=0))  # Wait for 1 second (adjustable)
             
             if events:
                 for socket, event in events.items():
-                    if socket == self.dealer_socket and event == zmq.POLLIN: 
-                        message = self.dealer_socket.recv_multipart()
+                    if socket == self.sub_socket and event == zmq.POLLIN: 
+                        message = self.sub_socket.recv_multipart()
                         
                         if len(message) == 1:
                             continue
@@ -87,7 +87,7 @@ class Actor:
         """
             ftop all the connexion with the other peers
         """
-        self.dealer_socket.close()
+        self.sub_socket.close()
 
         self.context.term()
 
@@ -141,9 +141,9 @@ class Actor:
                 #serialize the object
             
                 data = pickle.dumps(tmp)
-                message_to_send = [self.dealer_socket.identity,message.id_sender,data]
+                message_to_send = [self.sub_socket.identity,message.id_sender,data]
 
-                self.dealer_socket.send_multipart(message_to_send)
+                self.sub_socket.send_multipart(message_to_send)
 
             return True
         else:
@@ -168,9 +168,9 @@ class Actor:
             #serialize the object
         
             data = pickle.dumps(message)
-            message_to_send = [self.dealer_socket.identity,message[0],data]
+            message_to_send = [self.sub_socket.identity,message[0],data]
 
-            self.dealer_socket.send_multipart(message_to_send)
+            self.sub_socket.send_multipart(message_to_send)
 
     
 

@@ -1,15 +1,12 @@
 from src import actor
 from send_data import PORT_FOR_SENDING_DATA, recieveObject
 import sys
-import time
 import zmq
 import pickle
-import threading
 
 """
     meme se fichier est n'est supprimer
 """
-
     
 if __name__ == "__main__":
     #get the ID and IP of the actual site 
@@ -23,7 +20,13 @@ if __name__ == "__main__":
 
     neighbors = DATAS_RECIEVED["nieghbors"]
 
-    actor = actor.Actor()
+    actor = actor.Actor(
+        id=SITE_ID,
+        site=SITE_ID,
+        costs=neighbors,
+        
+    )
+    
     sub = zmq.Context()
 
     sub = sub.socket(zmq.SUB)
@@ -36,7 +39,7 @@ if __name__ == "__main__":
     while True:
 
         events = dict(poller.poll(timeout=0))  # Wait for 1 second (adjustable)
-        
+
         if events:
             for socket, event in events.items():
                 if socket == sub and event == zmq.POLLIN: 

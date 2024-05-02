@@ -1,8 +1,10 @@
+import socket
 from Exp.configuration import Configuration
-from ..algorithme.send_data import sendObject
+from algorithme.send_data import sendObject
+
 
 ###### Start a reservation
-PATH_TO_CONFIG_FILE = "../algorithme/"
+PATH_TO_CONFIG_FILE = "configurationFiles/conf.yaml"
 
 
 if __name__ == "__main__":
@@ -36,11 +38,14 @@ if __name__ == "__main__":
     #execute them on each site
 
     # init an actor on each site
+    port_sub = 5554
+    port_pub = 5454
     for i, machine in enumerate(config.machines):
 
         #add latency to the neighbores
         datas["neighbors"] = graphe[i]
-
+        print(datas)
+        """
         with config.enoslib.actions(roles=config.roles[machine["roles"][0]]) as p:
             p.command(
                 task_name = "Delete the last version of the repo",
@@ -59,10 +64,14 @@ if __name__ == "__main__":
 
             p.command(
                 task_name  = "execute as-cast on the site",
-                cmd = f"python as-cast.py {i} {ips_address[i]}"
+                cmd = f"python as-cast.py {i} {ips_address[i]} {port_pub} {port_sub}"
             )
+            port_sub += 1
+            port_pub += 1
+
             #send data to site i
             sendObject(datas, ips_address[i])
+        """
 
 
 

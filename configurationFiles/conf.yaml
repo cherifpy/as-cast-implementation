@@ -1,7 +1,7 @@
 ---
 job_name: test_conf
 exp_env: debian11-min
-exp_walltime: 0:50:00
+exp_walltime: 0:30:00
 machines:
   - cluster: paravance
     nodes: 1
