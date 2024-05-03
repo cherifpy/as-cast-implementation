@@ -18,6 +18,8 @@ class Message(object):
 
     def __str__(self) -> str:
         return f"type: {self.type} from: {self.forward_from} time: {self.time}"
+    
+    
 
 
 class Delete(Message):

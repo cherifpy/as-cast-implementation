@@ -9,6 +9,21 @@ def run_command(command):
     result = subprocess.run(command.split(), capture_output=True, text=True)
     print(result)
 
+def sendInfosToPeer(id_peer:int,graphe_info,ip_address, sub_port, pub_port):
+    infos = []
+    
+    for i in range(len(graphe_info)):
+        if graphe_info[id_peer,i] > 0:
+            peer = {
+                "ip" : ip_address[i], 
+                "pub_port" : pub_port+i,
+                "sub_port" : sub_port+i,
+                'latency' : graphe_info[id_peer,i],
+                
+            } 
+
+            infos.append(peer)
+    return infos
 ###### Start a reservation
 PATH_TO_CONFIG_FILE = "configurationFiles/conf.yaml"
 
@@ -35,17 +50,15 @@ if __name__ == "__main__":
     graphe = config.getGraphe()
 
     #datas to send
-    datas = {
-        "ips": ips_address,
-        "graphe" : graphe
-    }
 
+    
     port_sub = 5554
     port_pub = 5454
     for i, machine in enumerate(config.machines):
 
-        datas["neighbors"] = graphe[i]
-        print("node========")
+        datas = sendInfosToPeer(i,graphe, ips_address,5554,5454)
+        
+        print(f"node {i} ========")
         print(datas)
         
         """
@@ -66,7 +79,7 @@ if __name__ == "__main__":
             roles = config.roles[machine["roles"][0]]
         )
         """
-        print(datas)
+        
 
         cmd = f"python algorithme/as-cast.py {i} {port_pub} {port_sub}"
 
@@ -76,7 +89,7 @@ if __name__ == "__main__":
 
         port_sub += 1
         port_pub += 1
-        
+
         sendObject(datas, ips_address[i])
 
     

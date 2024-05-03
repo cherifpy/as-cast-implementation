@@ -3,7 +3,8 @@ from send_data import PORT_FOR_SENDING_DATA, recieveObject
 import sys
 import zmq
 import pickle
-
+from src.messages import Add, Delete
+import time
 """
     meme se fichier est n'est supprimer
 """
@@ -12,25 +13,37 @@ if __name__ == "__main__":
     #get the ID and IP of the actual site 
     SITE_ID = sys.argv[1] 
 
-    f = open(f"{SITE_ID}.txt",'w')
+    f = open(f"output/{SITE_ID}.txt",'w')
     
-    ID = sys.argv[1]
+
     PORT_PUB = sys.argv[2]
     PORT_SUB = sys.argv[3]
     #her, this function is used to recieve data from the site manager (where the enoslib script is executed)
     DATAS_RECIEVED = recieveObject()
 
 
-    neighbors_ips = DATAS_RECIEVED["ips"]
+    #neighbors_ips = DATAS_RECIEVED["ips"]
 
-    neighbors = DATAS_RECIEVED["neighbors"]
+    #neighbors = DATAS_RECIEVED["neighbors"]
+
 
     f.write(f"{SITE_ID} {PORT_PUB} {DATAS_RECIEVED}")
+    
+    costs = []
+    neighbors = []
+
+    for peer in DATAS_RECIEVED:
+        costs.append(peer["latency"])
+        neighbors.append({
+            "ip":peer["ip"],
+            "pub_port": peer["pub_port"],
+            "sub_port": peer["sub_port"]
+        })
 
     actor = actor.Actor(
-        id=SITE_ID,
-        site=SITE_ID,
-        costs=neighbors,
+        id=int(SITE_ID),
+        costs=costs,
+        site="None",
         neighbors=neighbors,
         sub_port= PORT_SUB,
         pub_port=PORT_PUB,
@@ -40,24 +53,32 @@ if __name__ == "__main__":
     sub = zmq.Context()
 
     sub = sub.socket(zmq.SUB)
-    sub.setsockopt(zmq.SUBSCRIBE, b"")
-    sub.connect("tcp://{IP_ADDRESS}:{}")
-    
+
+    for peer in neighbors:
+        sub.connect(f"tcp://{peer['ip']}:{peer['pub_port']}")
+            
     poller = zmq.Poller()
     poller.register(sub, zmq.POLLIN)
+    
+    print(type(actor.id))
+    if actor.id == 2:
+        time.sleep(5)
+        actor.site = "France"
+        actor.addData(data_id=0)
 
-    while False:
+    #while True:
 
-        events = dict(poller.poll(timeout=0))  # Wait for 1 second (adjustable)
+    events = dict(poller.poll(timeout=0))  # Wait for 1 second (adjustable)
 
-        if events:
-            for socket, event in events.items():
-                if socket == sub and event == zmq.POLLIN: 
-                    message = sub.recv()
-                    
-                    message = pickle.load(message)
-
-                    actor.processMessage(message)
+    """if events:
+        for socket, event in events.items():
+            if socket == sub and event == zmq.POLLIN:"""
+    message = sub.recv()
+    print("ghesu")
+    message = pickle.load(message)
+    f.write(f"received {message.type} message from")
+    f.close()
+    actor.processMessage(message)
     # => May block forever waiting for an answer
 
         

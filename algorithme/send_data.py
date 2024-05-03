@@ -9,7 +9,7 @@ PORT_FOR_SENDING_DATA = 8080
 """
 
 def sendObject(obj:object, ip:str):
-    time.sleep(3)
+    time.sleep(1)
     
     #serialize the object
     data = pickle.dumps(obj)
