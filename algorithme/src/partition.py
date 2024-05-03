@@ -1,4 +1,4 @@
-from actor import Actor
+
 import copy
 """
     This class is used to manage a group of nodes
@@ -7,7 +7,7 @@ import copy
 
 class Partition:
     nb_partition = 0
-    def __init__(self,id_partition:int, id_data:int,main_node:Actor, cost,  partition_name:str = "nothing") -> None:
+    def __init__(self,id_partition:int, id_data:int,main_node, cost,  partition_name:str = "nothing") -> None:
         Partition.nb_partition += 1
         self.id_partition = Partition.nb_partition
         self.main_node = main_node
@@ -17,7 +17,7 @@ class Partition:
         self.nb_access_to_obj = 0
         self.best = cost
 
-    def addActor(self, node: Actor):
+    def addActor(self, node):
         self.nodes.append(node)
 
     def removeActor(self, site:str):

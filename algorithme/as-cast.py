@@ -14,16 +14,16 @@ if __name__ == "__main__":
 
     f = open(f"{SITE_ID}.txt",'w')
     
-    ID = sys.argv[2]
-    PORT_PUB = sys.argv[3]
-    PORT_SUB = sys.argv[4]
+    ID = sys.argv[1]
+    PORT_PUB = sys.argv[2]
+    PORT_SUB = sys.argv[3]
     #her, this function is used to recieve data from the site manager (where the enoslib script is executed)
     DATAS_RECIEVED = recieveObject()
 
 
     neighbors_ips = DATAS_RECIEVED["ips"]
 
-    neighbors = DATAS_RECIEVED["nieghbors"]
+    neighbors = DATAS_RECIEVED["neighbors"]
 
     f.write(f"{SITE_ID} {PORT_PUB} {DATAS_RECIEVED}")
 
@@ -31,6 +31,10 @@ if __name__ == "__main__":
         id=SITE_ID,
         site=SITE_ID,
         costs=neighbors,
+        neighbors=neighbors,
+        sub_port= PORT_SUB,
+        pub_port=PORT_PUB,
+        total_memorie='1'
     )
 
     sub = zmq.Context()

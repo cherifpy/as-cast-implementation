@@ -1,7 +1,7 @@
 import sys
 from .messages import Add, Delete, Message, ReplayMessag
-from cache import Cache
-from partition import Partition
+#from cache import Cache
+from src.partition import Partition
 from params import NB_DATAS, NB_NODES
 import numpy as np
 import zmq
@@ -15,7 +15,7 @@ import copy
 
 class Actor:
 
-    def __init__(self,id:str, site:str, costs:list, total_memorie, neighbors:dict,sub_port:int):
+    def __init__(self,id:str, site:str, costs:list, total_memorie, neighbors:dict,sub_port:int,pub_port:int):
         self.site = site
         self.state = None
         self.min_cout = sys.maxsize
@@ -35,8 +35,9 @@ class Actor:
         self.ocuped_space = 0
         self.nb_neighbords = len(neighbors.keys())
         self.sub_port = sub_port
+        self.pub_port = pub_port
         self.cache = None
-        
+
     def start(self):
         """
             Starts the server by creating a socket and listening for connections.
@@ -50,8 +51,8 @@ class Actor:
 
         for key in self.neighbors.keys():
             
-
-            connected = self.sub_socket.connect(f"tcp://{self.neighbors["key"][0]}:{self.neighbors["key"][1]}")  
+            
+            connected = self.sub_socket.connect(f"tcp://{self.neighbors[key][0]}:{self.neighbors[key][1]}")  
             print(f"Peer 1 connected with: {connected}")
 
             self.sub_socket.send_multipart(["connexion".encode()])
