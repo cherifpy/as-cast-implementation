@@ -62,9 +62,10 @@ if __name__ == "__main__":
     
     print(type(actor.id))
     if actor.id == 2:
+        print("hello from france")
         time.sleep(5)
         actor.site = "France"
-        actor.addData(data_id=0)
+        actor.addData(id_data=0)
 
     #while True:
 
@@ -73,9 +74,9 @@ if __name__ == "__main__":
     """if events:
         for socket, event in events.items():
             if socket == sub and event == zmq.POLLIN:"""
-    message = sub.recv()
+    message = sub.recv_pyobj()
     print("ghesu")
-    message = pickle.load(message)
+    
     f.write(f"received {message.type} message from")
     f.close()
     actor.processMessage(message)

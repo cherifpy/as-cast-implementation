@@ -16,6 +16,7 @@ import copy
 class Actor:
 
     def __init__(self,id:str, site:str, costs:list, total_memorie, neighbors:dict,sub_port:int,pub_port:int):
+        self.id = id
         self.site = site
         self.state = None
         self.min_cout = sys.maxsize
@@ -26,14 +27,14 @@ class Actor:
         self.costs = costs 
         self.partitions = [None for i in range(NB_DATAS)] #list of partition is include on (one peer data)
         self.source_of = [0 for i in range(NB_DATAS)] #binary vectore to say if this node is a source to the i-th data 
-        self.all_costs = {} #vector of all costs for all the data
+        self.all_datas_costs = [-1 for i in range(NB_DATAS)] #vector of all costs for all the data
         self.hstoric = [None for i in range(NB_DATAS)]
         self.running = False
         self.context = None
         self.sub_socket = None
         self.total_memorie = total_memorie
         self.ocuped_space = 0
-        self.nb_neighbords = len(neighbors.keys())
+        self.nb_neighbords = len(neighbors)
         self.sub_port = sub_port
         self.pub_port = pub_port
         self.cache = None
@@ -173,37 +174,33 @@ class Actor:
 
             self.sub_socket.send_multipart(message_to_send)
 
-    
-
-    def createPartition(self, id_data, ):
-        self.partitions[id_data] = Partition(
-            id_parition = 0,
+    def addData(self, id_data, ):
+        """self.partitions[id_data] = Partition(
             main_node = self,
             partition_name = "test",
             id_data = id_data
+        )"""
+
+        self.all_datas_costs[id_data] = 0 
+        
+        add_message = Add(
+            id_sender = self.id,
+            sender=self.id,
+            cost= 0,
+            id_data = id_data,
+            id_source = self.id
         )
 
-        #TODO the cost ???? 
+        self.sendToConnectedPeers(add_message)
 
-        
-        for i in range(self.nb_neighbords):
-            add_message = Add(
-                id_sender = self.id,
-                sender=self.id,
-                cost= self.costs[i],
-                id_source = self.site
-            )
-            message = pickle.dump(add_message)
-            self.sendForward(message)
-
-    def sendForward(self,message):
+    def sendToConnectedPeers(self,message):
         context = zmq.Context()
 
         pub_address = f"tcp://*:{self.pub_port}"
         pub = context.socket(zmq.PUB)
         pub.bind(pub_address)
     
-        pub.send("connexion...".encode())
+        pub.send_pyobj("connexion...".encode())
         
         time.sleep(0.01)
 

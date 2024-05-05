@@ -8,8 +8,6 @@ import copy
 class Partition:
     nb_partition = 0
     def __init__(self, id_data:int,  partition_name:str = "nothing") -> None:
-        Partition.nb_partition += 1
-        self.id_partition = Partition.nb_partition
         self.partition_name = partition_name
         self.id_data = None
         self.nodes = []
