@@ -15,6 +15,7 @@ def sendInfosToPeer(id_peer:int,graphe_info,ip_address, sub_port, pub_port):
     for i in range(len(graphe_info)):
         if graphe_info[id_peer,i] > 0:
             peer = {
+                "id": i,
                 "ip" : ip_address[i], 
                 "pub_port" : pub_port+i,
                 "sub_port" : sub_port+i,

@@ -13,7 +13,7 @@ if __name__ == "__main__":
     #get the ID and IP of the actual site 
     SITE_ID = sys.argv[1] 
 
-    f = open(f"output/{SITE_ID}.txt",'w')
+    
     
 
     PORT_PUB = sys.argv[2]
@@ -27,7 +27,7 @@ if __name__ == "__main__":
     #neighbors = DATAS_RECIEVED["neighbors"]
 
 
-    f.write(f"{SITE_ID} {PORT_PUB} {DATAS_RECIEVED}")
+    
     
     costs = []
     neighbors = []
@@ -35,6 +35,7 @@ if __name__ == "__main__":
     for peer in DATAS_RECIEVED:
         costs.append(peer["latency"])
         neighbors.append({
+            "id":peer["id"],
             "ip":peer["ip"],
             "pub_port": peer["pub_port"],
             "sub_port": peer["sub_port"]
@@ -49,37 +50,45 @@ if __name__ == "__main__":
         pub_port=PORT_PUB,
         total_memorie='1'
     )
+    actor.output.write(f"{SITE_ID} {PORT_PUB} {DATAS_RECIEVED}")
 
-    sub = zmq.Context()
-
-    sub = sub.socket(zmq.SUB)
-
-    for peer in neighbors:
-        sub.connect(f"tcp://{peer['ip']}:{peer['pub_port']}")
+    actor.start()
             
     poller = zmq.Poller()
-    poller.register(sub, zmq.POLLIN)
+    poller.register(actor.sub_socket, zmq.POLLIN)
     
     print(type(actor.id))
-    if actor.id == 2:
-        print("hello from france")
-        time.sleep(5)
-        actor.site = "France"
+    if actor.id == 0:
+        
+        time.sleep(1)
+        actor.site = "A"
         actor.addData(id_data=0)
+    
+    if actor.id == 1:
+        time.sleep(1)
+        actor.site = "B"
 
-    #while True:
+    if actor.id == 2:
+        time.sleep(1)
+        actor.site = "C"
 
-    events = dict(poller.poll(timeout=0))  # Wait for 1 second (adjustable)
-
+    if actor.id == 3:
+        time.sleep(1)
+        actor.site = "D"
+    
     """if events:
         for socket, event in events.items():
             if socket == sub and event == zmq.POLLIN:"""
-    message = sub.recv_pyobj()
-    print("ghesu")
     
-    f.write(f"received {message.type} message from")
+    while True:
+        
+        message = actor.sub_socket.recv_pyobj()
+        
+        actor.output.write(f"\nreceived {message.type} message from {message.id_sender} source:{message.id_source}")
+        
+        actor.processMessage(message)
+
     f.close()
-    actor.processMessage(message)
-    # => May block forever waiting for an answer
+    actor.stop()
 
         

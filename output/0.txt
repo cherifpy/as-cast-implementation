@@ -1,0 +1,8 @@
+0 5454 [{'id': 1, 'ip': 'localhost', 'pub_port': 5455, 'sub_port': 5555, 'latency': 2.0}]
+sub connected to tcp://localhost:5455
+pub bined on tcp://*:5454
+
+
+===========start exp:
+received add message from 1 source:0
+Add message not accepted

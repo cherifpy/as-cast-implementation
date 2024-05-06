@@ -229,7 +229,7 @@ class Configuration:
     def getStorageCapacities(self,):
         
         collector_address = self.roles['Qnode1'][0].address
-        time.sleep(10)
+        
         with self.enoslib.G5kTunnel(collector_address, 8086) as (local_address, local_port, tunnel):
             url = f"http://{local_address}:{local_port}/query"
             print(url)

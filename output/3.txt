@@ -1,0 +1,9 @@
+3 5457 [{'id': 1, 'ip': 'localhost', 'pub_port': 5455, 'sub_port': 5555, 'latency': 1.0}, {'id': 2, 'ip': 'localhost', 'pub_port': 5456, 'sub_port': 5556, 'latency': 3.0}]
+sub connected to tcp://localhost:5455
+sub connected to tcp://localhost:5456
+pub bined on tcp://*:5457
+
+
+===========start exp:
+received add message from 2 source:0
+Add message from 2 accepted new cost 6.0
