@@ -21,10 +21,11 @@ class Message(object):
     
     
 class Delete(Message):
-    def __init__(self, id_sender:int, sender:str, id_data:int,forward_from):
-        super().__init__("delete", sender)
+    def __init__(self, id_sender:int, id_data:int,source):
+        super().__init__("delete", id_sender)
         self.id_sender = id_sender
         self.id_data = id_data
+        self.source = source
 
 class Add(Message):
     def __init__(self, id_sender:int,  cost:float, id_data:int,id_source):

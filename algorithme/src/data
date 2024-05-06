@@ -1,0 +1,6 @@
+class Date(object):
+
+    def __init__(self, id_data, size) -> None:
+        self.id_data = id_data
+        self.size = size
+    

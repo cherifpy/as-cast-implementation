@@ -17,7 +17,7 @@ def sendInfosToPeer(id_peer:int,graphe_info,ip_address, sub_port, pub_port):
             peer = {
                 "id": i,
                 "ip" : ip_address[i], 
-                "pub_port" : pub_port+i,
+                "pub_port" : pub_port+i, 
                 "sub_port" : sub_port+i,
                 'latency' : graphe_info[id_peer,i],
                 
