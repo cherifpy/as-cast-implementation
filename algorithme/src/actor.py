@@ -1,6 +1,5 @@
 import sys
-
-from .messages import Add, Delete, Message, Blocked
+from src.messages import Add, Delete, Message, Blocked, Connexion
 #from cache import Cache
 from src.partition import Partition
 from params import NB_DATAS, NB_NODES
@@ -9,6 +8,7 @@ import zmq
 import time
 import pickle
 import copy
+from src.data import Data
 """
     this class is an implementation of an actor using PyKKA modul
 """
@@ -35,7 +35,8 @@ class Actor:
         self.sub_port = sub_port
         self.pub_port = pub_port
         self.cache = None
-        self.files = {}
+        self.datas_ids = {}
+        self.datas = {}
         self.history = {}
         self.output = open(f"output/{self.id}.txt",'w')
 
@@ -88,11 +89,15 @@ class Actor:
         #if the message is a delete do this
         if isinstance(message, Delete):
             self.recievedDelete(Delete)
-
+            return True
         #if the message is an add do this 
         if isinstance(message, Add):
             self.recievedAdd(message)
+            return True
         
+        if isinstance(message, Connexion):
+            pass
+
         if isinstance(message, Blocked):
             pass
 
@@ -111,7 +116,7 @@ class Actor:
                 cost = self.costs[i]
                 break
         if self.source_of[message.id_data] == 0 and self.all_datas_costs[message.id_data] > (message.cost + cost):
-            self.output.write(f"\nAdd message from {message.id_sender} accepted new cost {message.cost + cost}")
+            self.output.write(f"\nAdd message from {message.id_sender} accepted new cost for data id {message.id_data} : {message.cost + cost}")
             self.all_datas_costs[message.id_data] = message.cost + cost
             self.data_sources[message.id_data] = message.id_source
 
@@ -135,21 +140,21 @@ class Actor:
         if self.source_of[message.id_data] == 1:
 
 
-            self.output.write(f"\nDelete message from {message.id_sender} accepted new cost {message.cost + cost}")
-            self.all_datas_costs[message.id_data] = message.cost + cost
+            self.output.write(f"\nDelete message from {message.id_sender} accepted")
+            self.all_datas_costs[message.id_data] = float('inf')
             self.data_sources[message.id_data] = message.id_source
 
             message.id_sender = self.id
-            message.cost = message.cost + cost
+            
             self.sendToConnectedPeers(message)
-
+ 
             return True
         else:
             self.output.write("\nAdd message not accepted")
             return False
         
 
-    def addData(self, id_data, ):
+    def addData(self, id_data, data:Data):
         if self.source_of[id_data] != 0:
             return False
         else:
@@ -169,11 +174,14 @@ class Actor:
                 id_source = self.id
             )
 
+            self.datas
+
             self.sendToConnectedPeers(add_message)
 
             return True
 
     def deleteDate(self, id_data):
+
         if self.source_of[id_data] == 0:
             return False
         
@@ -186,7 +194,7 @@ class Actor:
             )
 
             self.source_of[id_data] = 0
-            del self.files[id_data]
+            del self.datas[id_data]
 
             self.sendToConnectedPeers(delete_message)
             
@@ -196,7 +204,7 @@ class Actor:
     def sendToConnectedPeers(self,message):
         #self.pub_socket.send_pyobj(list(["connexion..."]))
         
-        time.sleep(0.1)
+        time.sleep(1)
         #while True:
         self.pub_socket.send_pyobj(message) 
 

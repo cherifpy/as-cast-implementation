@@ -51,7 +51,11 @@ class Blocked(Message):
         super().__init__(type, sender)
 
 
-    
+
+class Connexion(Message):
+    def __init__(self, type, forward_from):
+        super().__init__(type, forward_from)
+        
 
 
 

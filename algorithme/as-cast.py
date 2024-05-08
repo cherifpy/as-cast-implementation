@@ -5,6 +5,8 @@ import zmq
 import pickle
 from src.messages import Add, Delete
 import time
+from src.data import Data
+import threading 
 """
     meme se fichier est n'est supprimer
 """
@@ -58,22 +60,27 @@ if __name__ == "__main__":
     poller.register(actor.sub_socket, zmq.POLLIN)
     
     print(type(actor.id))
+
     if actor.id == 0:
         
-        time.sleep(1)
+        time.sleep(2)
         actor.site = "A"
-        actor.addData(id_data=0)
+        new_data = Data(
+            id_data = 0,
+            size=5
+        )
+        actor.addData(id_data=0, data=new_data)
     
     if actor.id == 1:
         time.sleep(1)
         actor.site = "B"
 
     if actor.id == 2:
-        time.sleep(1)
+        time.sleep(0.5)
         actor.site = "C"
 
     if actor.id == 3:
-        time.sleep(1)
+        time.sleep(0)
         actor.site = "D"
     
     """if events:
@@ -86,7 +93,9 @@ if __name__ == "__main__":
         
         actor.output.write(f"\nreceived {message.type} message from {message.id_sender} source:{message.id_source}")
         
-        actor.processMessage(message)
+        #actor.processMessage(message)
+        thread = threading.Thread(target=actor.processMessage, args=(message,))
+        thread.start()
 
     f.close()
     actor.stop()
