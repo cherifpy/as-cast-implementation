@@ -2,7 +2,7 @@ import socket
 import threading
 
 """
-    pas besoin puique j'utilise ZMQ
+    no need since i use zmq
 """
 
 

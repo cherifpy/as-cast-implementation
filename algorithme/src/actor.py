@@ -1,14 +1,18 @@
 import sys
 from src.messages import Add, Delete, Message, Blocked, Connexion
-#from cache import Cache
+from src.data import Data
+from  src.communication import Communication
 from src.partition import Partition
+
 from params import NB_DATAS, NB_NODES
 import numpy as np
 import zmq
 import time
 import pickle
 import copy
-from src.data import Data
+
+
+#from cache import Cache
 """
     this class is an implementation of an actor using PyKKA modul
 """
@@ -39,40 +43,20 @@ class Actor:
         self.datas = {}
         self.history = {}
         self.output = open(f"output/{self.id}.txt",'w')
+        self.connection = None
+
+
 
     def start(self):
         """
             Starts the server by creating a socket and listening for connections.
         """
 
-        self.context = zmq.Context()
-
-        # Dealer socket for sending messages
-        self.sub_socket = self.context.socket(zmq.SUB)
-
-        self.sub_socket.setsockopt(zmq.SUBSCRIBE, b"")
-        
-        self.pub_socket = self.context.socket(zmq.PUB)
-
-
-        for peer in self.neighbors:
-            self.sub_socket.connect(f"tcp://{peer['ip']}:{peer['pub_port']}")
-            self.output.write(f"\nsub connected to tcp://{peer['ip']}:{peer['pub_port']}")
-
-        pub_address = f"tcp://*:{self.pub_port}"
-        self.output.write(f"\npub bined on tcp://*:{self.pub_port}")
-        self.pub_socket.bind(pub_address)
+        self.connection = Communication(self.pub_port, self.sub_port)
+        self.connection.connect(self.neighbors, self.output)
 
         self.output.write("\n\n\n===========start exp:")
-
-    def run(self,):
-        """
-            a supprimer: code de la function depacer vers le fichier as-cast
-        
-        """
-        pass
                             
-
     def stop(self):
         """
             ftop all the connexion with the other peers
@@ -203,8 +187,7 @@ class Actor:
 
     def sendToConnectedPeers(self,message):
         #self.pub_socket.send_pyobj(list(["connexion..."]))
-        
-        time.sleep(1)
+
         #while True:
-        self.pub_socket.send_pyobj(message) 
+        self.connection.send(message) 
 

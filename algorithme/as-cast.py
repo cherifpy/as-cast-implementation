@@ -89,7 +89,7 @@ if __name__ == "__main__":
     
     while True:
         
-        message = actor.sub_socket.recv_pyobj()
+        message = actor.connection.recv()
         
         actor.output.write(f"\nreceived {message.type} message from {message.id_sender} source:{message.id_source}")
         
