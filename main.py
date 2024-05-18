@@ -39,8 +39,8 @@ if __name__ == "__main__":
     MAT_GRAPHE = config.getGraphe()
 
     # set reservation on nodes
-    #provider = config.setReservation()
-    #netem = config.setNetworkConstraintes()
+    provider = config.setReservation()
+    netem = config.setNetworkConstraintes()
 
     ## get the data needed by the actors
 
