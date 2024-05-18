@@ -36,7 +36,7 @@ network_constraints:
         dst: D
         delay: 1ms
         symmetric: True
-      - src: C
+      - src: A
         dst: D
         delay: 3ms
         symmetric: True

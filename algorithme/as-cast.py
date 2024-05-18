@@ -15,11 +15,9 @@ if __name__ == "__main__":
     #get the ID and IP of the actual site 
     SITE_ID = sys.argv[1] 
 
-    
-    
-
     PORT_PUB = sys.argv[2]
     PORT_SUB = sys.argv[3]
+
     #her, this function is used to recieve data from the site manager (where the enoslib script is executed)
     DATAS_RECIEVED = recieveObject()
 
@@ -27,9 +25,6 @@ if __name__ == "__main__":
     #neighbors_ips = DATAS_RECIEVED["ips"]
 
     #neighbors = DATAS_RECIEVED["neighbors"]
-
-
-    
     
     costs = []
     neighbors = []
@@ -63,7 +58,7 @@ if __name__ == "__main__":
 
     if actor.id == 0:
         
-        time.sleep(2)
+        time.sleep(3)
         actor.site = "A"
         new_data = Data(
             id_data = 0,
@@ -72,15 +67,15 @@ if __name__ == "__main__":
         actor.addData(id_data=0, data=new_data)
     
     if actor.id == 1:
-        time.sleep(1)
+        time.sleep(2)
         actor.site = "B"
 
     if actor.id == 2:
-        time.sleep(0.5)
+        time.sleep(1)
         actor.site = "C"
 
     if actor.id == 3:
-        time.sleep(0)
+        time.sleep(1)
         actor.site = "D"
     
     """if events:

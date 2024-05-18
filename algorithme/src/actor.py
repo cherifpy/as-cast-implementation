@@ -44,7 +44,7 @@ class Actor:
         self.history = {}
         self.output = open(f"output/{self.id}.txt",'w')
         self.connection = None
-
+        
 
 
     def start(self):
@@ -77,7 +77,7 @@ class Actor:
         #if the message is an add do this 
         if isinstance(message, Add):
             self.recievedAdd(message)
-            return True
+            pass
         
         if isinstance(message, Connexion):
             pass
@@ -99,10 +99,13 @@ class Actor:
             if peer['id'] == message.id_sender:
                 cost = self.costs[i]
                 break
+
         if self.source_of[message.id_data] == 0 and self.all_datas_costs[message.id_data] > (message.cost + cost):
             self.output.write(f"\nAdd message from {message.id_sender} accepted new cost for data id {message.id_data} : {message.cost + cost}")
             self.all_datas_costs[message.id_data] = message.cost + cost
             self.data_sources[message.id_data] = message.id_source
+            
+            self.output.write(f"\nNew source {str(self.data_sources)}")
 
             message.id_sender = self.id
             message.cost = message.cost + cost

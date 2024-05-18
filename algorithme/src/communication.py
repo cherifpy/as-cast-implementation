@@ -1,7 +1,7 @@
 import zmq
 from .messages import Message
 import time
-
+import zenoh
 
 class Communication(object):
 
@@ -50,3 +50,44 @@ class Communication(object):
         self.pub_socket.close()
         self.context.term()
 
+
+
+class CommunicationZENOH(object):
+
+    def __init__(self, topic) -> None:
+        self.session = zenoh.open()
+        self.topic = topic
+        
+
+
+    def connect(self, output):
+        """
+            Starts the server by creating a socket and listening for connections.
+        """
+        self.pub = self.session.declare_publisher(self.topic)
+
+        output.write("\npub started")
+        
+
+    def send(self, data:Message):
+        
+        self.pub.put(data.to_json())
+        
+    
+    def recv(self):
+
+        return self.sub_socket.recv_pyobj()
+
+    def stop(self):
+        """
+            stop all the connexion with the other peers
+        """
+        #close pub sub socket
+        self.sub_socket.close() 
+        self.pub_socket.close()
+        self.context.term()
+
+    def listener(sample):
+        print(f"Received {sample.kind} ('{sample.key_expr}': '{msg.id_sender}')")
+        msg = Message.from_json(sample.payload.decode('utf-8'))
+        return msg

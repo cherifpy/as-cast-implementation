@@ -62,7 +62,7 @@ if __name__ == "__main__":
         print(f"node {i} ========")
         print(datas)
         
-        """
+        
         with config.enoslib.actions(roles=config.roles[machine["roles"][0]]) as p:
             
             p.apt(name=[ "git"], state="present")
@@ -74,6 +74,8 @@ if __name__ == "__main__":
         
         
         
+        cmd = f"python algorithme/as-cast.py {i} {port_pub} {port_sub}"
+
         
         result = config.enoslib.run_command(
             cmd,
@@ -87,7 +89,7 @@ if __name__ == "__main__":
         thread = threading.Thread(target=run_command, args=(cmd,))
         thread.start()
     
-
+        """
         port_sub += 1
         port_pub += 1
 
