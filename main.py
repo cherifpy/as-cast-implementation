@@ -1,5 +1,7 @@
 import subprocess
 import socket
+
+from numpy import source
 from Exp.configuration import Configuration
 from algorithme.send_data import sendObject
 import threading
@@ -62,7 +64,7 @@ if __name__ == "__main__":
         print(f"node {i} ========")
         print(datas)
         
-        config.enoslib.ensure_python3()
+        config.enoslib.ensure_python3(make_default=True)
 
         with config.enoslib.actions(roles=config.roles[machine["roles"][0]]) as p:
             
