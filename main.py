@@ -62,10 +62,11 @@ if __name__ == "__main__":
         print(f"node {i} ========")
         print(datas)
         
-        
+        config.enoslib.ensure_python3()
+
         with config.enoslib.actions(roles=config.roles[machine["roles"][0]]) as p:
             
-            p.apt(name=[ "git", "python3"], state="present")
+            p.apt(name=["git"], state="present")
             p.command(
                 task_name = "Delete the last version of the repo",
                 cmd = "rm -rf /home/csimohammed/as-cast-implementation"
@@ -74,7 +75,7 @@ if __name__ == "__main__":
         
         
         
-        cmd = f"bin/python algorithme/as-cast.py {i} {port_pub} {port_sub}"
+        cmd = f"python3 algorithme/as-cast.py {i} {port_pub} {port_sub}"
 
         
         result = config.enoslib.run_command(
