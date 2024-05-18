@@ -64,7 +64,7 @@ if __name__ == "__main__":
         print(f"node {i} ========")
         print(datas)
         
-        config.enoslib.ensure_python3(make_default=True)
+        config.enoslib.ensure_python3(True, config.roles)
 
         with config.enoslib.actions(roles=config.roles[machine["roles"][0]]) as p:
             
