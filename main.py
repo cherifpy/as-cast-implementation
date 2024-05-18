@@ -74,7 +74,7 @@ if __name__ == "__main__":
         
         
         
-        cmd = f"bin/python3 algorithme/as-cast.py {i} {port_pub} {port_sub}"
+        cmd = f"bin/python algorithme/as-cast.py {i} {port_pub} {port_sub}"
 
         
         result = config.enoslib.run_command(
