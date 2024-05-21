@@ -65,11 +65,12 @@ if __name__ == "__main__":
         print(datas)
         
         config.enoslib.ensure_python3(True,roles=config.roles[machine["roles"][0]])
+        
         with config.enoslib.actions(roles=config.roles[machine["roles"][0]]) as p:
             #p.ensure_python()
             p.apt(name=["git"], state="present")
 
-            p.pip(name=["pyzmq"], state="present")
+            #p.pip(name=["pyzmq"])
 
             p.command(
                 task_name = "Delete the last version of the repo",
@@ -78,10 +79,10 @@ if __name__ == "__main__":
             p.git(repo="https://github.com/cherifpy/as-cast-implementation.git", dest="/home/csimohammed/as-cast-implementation")
         
         
-        """result = config.enoslib.run_command(
-            "",
+        result = config.enoslib.run_command(
+            "pip install pyzmq",
             roles = config.roles[machine["roles"][0]]
-        )"""
+        )
         
         cmd = f"python3  /home/csimohammed/as-cast-implementation/algorithme/as-cast.py {i} {port_pub} {port_sub}"
 
