@@ -69,10 +69,7 @@ if __name__ == "__main__":
             #p.ensure_python()
             p.apt(name=["git"], state="present")
 
-            p.command(
-                task_name = "install python's packages",
-                cmd = "pip3 install -r /home/csimohammed/as-cast-implementation/requirements.txt"
-            )
+            p.pip(name=["pyzmq"], state="present")
 
             p.command(
                 task_name = "Delete the last version of the repo",
