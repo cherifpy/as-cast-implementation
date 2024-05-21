@@ -80,7 +80,7 @@ if __name__ == "__main__":
         
         
         result = config.enoslib.run_command(
-            "pip install pyzmq",
+            "pip3 install pyzmq",
             roles = config.roles[machine["roles"][0]]
         )
         
