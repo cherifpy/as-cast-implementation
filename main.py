@@ -71,7 +71,7 @@ if __name__ == "__main__":
 
             p.command(
                 task_name = "install python's packages",
-                cmd = "python3 -m pip install -r /home/csimohammed/as-cast-implementation/requirements.txt"
+                cmd = "python3 -m pip3 install -r /home/csimohammed/as-cast-implementation/requirements.txt"
             )
 
             p.command(
