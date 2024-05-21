@@ -1,3 +1,4 @@
+import re
 import yaml
 import numpy as np
 import requests
@@ -32,6 +33,7 @@ class Configuration:
         self.enoslib.init_logging(level=logging.INFO)
         self.enoslib.check()
         self.nb_sites = len(self.machines)
+        self.python_packages:list = None
 
     
         #print(self.machines)
@@ -144,7 +146,19 @@ class Configuration:
                 )
         else:
             print("Aucun package a installer")
-        
+
+    def installPythonPackages(self, packages:list=[]):
+
+        if(len(packages) != 0 ):
+            with self.enoslib.actions(roles=self.roles) as p:
+                p.apt(
+                    name= packages,
+                    state="present",
+                )
+        else:
+            print("There is no package to install")
+
+
     def deployTIGMonitoring(self, site,node,port = 3000):
         # The Monitoring service knows how to use this specific runtime
         m = self.enoslib.TIGMonitoring(
