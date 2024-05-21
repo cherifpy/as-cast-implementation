@@ -80,7 +80,7 @@ if __name__ == "__main__":
             roles = config.roles[machine["roles"][0]]
         )"""
         
-        cmd = f"python3 algorithme/as-cast.py {i} {port_pub} {port_sub}"
+        cmd = f"python3  /home/csimohammed/as-cast-implementation/algorithme/as-cast.py {i} {port_pub} {port_sub}"
 
         
         result = config.enoslib.run_command(
