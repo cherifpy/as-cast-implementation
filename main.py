@@ -68,6 +68,12 @@ if __name__ == "__main__":
         with config.enoslib.actions(roles=config.roles[machine["roles"][0]]) as p:
             #p.ensure_python()
             p.apt(name=["git"], state="present")
+
+            p.command(
+                task_name = "start python env",
+                cmd = "source /home/csimohammed/env/bin/activate"
+            )
+
             p.command(
                 task_name = "Delete the last version of the repo",
                 cmd = "rm -rf /home/csimohammed/as-cast-implementation"
