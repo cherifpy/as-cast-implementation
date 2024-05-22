@@ -66,7 +66,7 @@ if __name__ == "__main__":
         print(datas)
         
         
-        config.enoslib.ensure_python3(True,roles=config.roles[machine["roles"][0]])
+        #config.enoslib.ensure_python3(True,roles=config.roles[machine["roles"][0]])
         
         with config.enoslib.actions(roles=config.roles[machine["roles"][0]]) as p:
             #p.ensure_python()
