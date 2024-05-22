@@ -1,3 +1,4 @@
+from ipaddress import ip_address
 import subprocess
 import socket
 
@@ -39,7 +40,7 @@ if __name__ == "__main__":
 
     NB_SITE = config.nb_sites
     MAT_GRAPHE = config.getGraphe()
-
+    
     # set reservation on nodes
     provider = config.setReservation()
     netem = config.setNetworkConstraintes()
@@ -47,7 +48,7 @@ if __name__ == "__main__":
     ## get the data needed by the actors
 
     # list of all sites ip
-    ips_address = ["localhost" for i in range(len(config.machines))]#config.getAllIPs()
+    ips_address = config.getAllIPs()
 
     #graphe
     graphe = config.getGraphe()
@@ -63,6 +64,7 @@ if __name__ == "__main__":
         
         print(f"node {i} ========")
         print(datas)
+        
         
         config.enoslib.ensure_python3(True,roles=config.roles[machine["roles"][0]])
         
@@ -91,15 +93,11 @@ if __name__ == "__main__":
             cmd,
             roles = config.roles[machine["roles"][0]]
         )
-        """
         
-
-        cmd = f"python algorithme/as-cast.py {i} {port_pub} {port_sub}"
+        """cmd = f"python algorithme/as-cast.py {i} {port_pub} {port_sub}"
 
         thread = threading.Thread(target=run_command, args=(cmd,))
-        thread.start()
-    
-        """
+        thread.start()"""
         port_sub += 1
         port_pub += 1
 

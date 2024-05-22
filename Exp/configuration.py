@@ -22,6 +22,8 @@ class Configuration:
         self.walltime = self.parametres.get("exp_walltime")
         self.job_type = self.parametres.get("job_type",[])
         self.env_name = self.parametres.get("exp_env")
+        self.execution_local = self.parametres.get("execution_local")
+        self.user_id = self.parametres.get("user_id")
         self.provider = None
         self.emulation_conf = None
         self.monitoringDeployed = False
@@ -33,13 +35,15 @@ class Configuration:
         self.enoslib.init_logging(level=logging.INFO)
         self.enoslib.check()
         self.nb_sites = len(self.machines)
-        self.python_packages:list = None
+        self.python_libs:list = None
+        
 
     
         #print(self.machines)
 
     def setReservation(self):
-
+        if not self.execution_local:
+            return None
         """
             the role of this function is to directly reserve the noeud needed 
             params:
@@ -62,7 +66,8 @@ class Configuration:
         return self.provider
 
     def setNetworkConstraintes(self):
-
+        if not self.execution_local:
+            return None
         self.emulation_conf = {
             "default_delay" : self.parametres.get('network_constraints', [{}])[0].get('default_delay'),
             "default_rate" : self.parametres.get('network_constraints', [{}])[0].get('default_rate'),
@@ -78,6 +83,9 @@ class Configuration:
             this functionis just used to 
         
         """
+        if not self.execution_local:
+            return None
+        
         if node == None:
             #get the IP address of a machine    
             machine = self.roles[role][0]
@@ -90,6 +98,8 @@ class Configuration:
         return str(ip_address.ip.ip)
     
     def getAllIPs(self): 
+        if not self.execution_local:
+            return ["localhost" for i in range(self.nb_sites)]
         ips = []
         for i, role in enumerate(self.roles):
             ip = self.getIpAddress(role)
@@ -102,6 +112,8 @@ class Configuration:
             this funtion is used to set the storage capacity restiction on each site
             it return nothing, it just a classe methode
         """
+        if not self.execution_local:
+            return None
         list_results = {}
         for i,machine in enumerate(self.machines):
             print("storage restriction for ", machine["roles"])
@@ -146,6 +158,33 @@ class Configuration:
                 )
         else:
             print("Aucun package a installer")
+
+    def clonGitReposiroty(self, repo_link:str, repo_name:str):
+
+        projet_path = f"/home/{self.user_id}/{repo_name}"
+        with self.enoslib.actions(roles=self.roles) as p:
+            p.apt(name=["git"], state="present")
+            p.command(
+                task_name = "Delete the last version of the repository if exist",
+                cmd = f"rm -rf {projet_path}"
+            )
+            p.git(repo=f"{repo_link}", dest=projet_path)
+        
+        
+        return projet_path
+
+
+    def preparePythonExecution(self):
+
+        self.enoslib.ensure_python3(True, self.roles)
+
+        with self.enoslib.actions(roles=self.roles) as p:
+            p.apt(name=["python3-pip"], state="present")
+        
+        for lib in self.python_libs:
+            self.enoslib.run_command(f"pip install {lib}", roles=self.roles)
+
+        return True
 
     def installPythonPackages(self, packages:list=[]):
 
