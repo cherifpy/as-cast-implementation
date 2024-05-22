@@ -42,7 +42,7 @@ class Configuration:
         #print(self.machines)
 
     def setReservation(self):
-        if not self.execution_local:
+        if self.execution_local:
             return None
         """
             the role of this function is to directly reserve the noeud needed 
@@ -66,7 +66,7 @@ class Configuration:
         return self.provider
 
     def setNetworkConstraintes(self):
-        if not self.execution_local:
+        if self.execution_local:
             return None
         self.emulation_conf = {
             "default_delay" : self.parametres.get('network_constraints', [{}])[0].get('default_delay'),
@@ -83,7 +83,7 @@ class Configuration:
             this functionis just used to 
         
         """
-        if not self.execution_local:
+        if self.execution_local:
             return None
         
         if node == None:
@@ -98,7 +98,7 @@ class Configuration:
         return str(ip_address.ip.ip)
     
     def getAllIPs(self): 
-        if not self.execution_local:
+        if self.execution_local:
             return ["localhost" for i in range(self.nb_sites)]
         ips = []
         for i, role in enumerate(self.roles):
@@ -112,7 +112,7 @@ class Configuration:
             this funtion is used to set the storage capacity restiction on each site
             it return nothing, it just a classe methode
         """
-        if not self.execution_local:
+        if self.execution_local:
             return None
         list_results = {}
         for i,machine in enumerate(self.machines):
