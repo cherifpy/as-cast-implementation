@@ -1,7 +1,7 @@
 import pickle
 import socket
 import time
-PORT_FOR_SENDING_DATA = 8080
+PORT_FOR_SENDING_DATA = 8880
 
 """ 
     J'aurais besoin de ca pour envoyer les données vers chaqu'un des nodes au debut de l'exp
