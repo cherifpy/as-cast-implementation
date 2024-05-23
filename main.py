@@ -77,9 +77,10 @@ if __name__ == "__main__":
             p.git(repo="https://github.com/cherifpy/as-cast-implementation.git", dest="/home/csimohammed/as-cast-implementation")
         
         
-        result = config.enoslib.run_command(
+        config.enoslib.run_command(
             "pip3 install pyzmq eclipse-zenoh numpy sockets",
-            roles = config.roles[machine["roles"][0]]
+            roles = config.roles[machine["roles"][0]],
+            
         )
         
         cmd = f"python3  /home/csimohammed/as-cast-implementation/algorithme/as-cast.py {i} {port_pub} {port_sub}"
@@ -87,7 +88,8 @@ if __name__ == "__main__":
         
         result = config.enoslib.run_command(
             cmd,
-            roles = config.roles[machine["roles"][0]]
+            roles = config.roles[machine["roles"][0]],
+            background=True
         )
         
         """cmd = f"python algorithme/as-cast.py {i} {port_pub} {port_sub}"
