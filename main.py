@@ -78,7 +78,7 @@ if __name__ == "__main__":
         
         
         result = config.enoslib.run_command(
-            "pip3 install pyzmq eclipse-zenoh numpy sockets copy threading time",
+            "pip3 install pyzmq eclipse-zenoh numpy sockets",
             roles = config.roles[machine["roles"][0]]
         )
         
