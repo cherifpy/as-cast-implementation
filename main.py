@@ -98,7 +98,7 @@ if __name__ == "__main__":
         thread.start()"""
         port_sub += 1
         port_pub += 1
-
+        print(f"adresse IP du node {0} : {ips_address[i]}")
         sendObject(datas, ips_address[i])
 
     
