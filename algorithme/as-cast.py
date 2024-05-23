@@ -2,8 +2,6 @@ from src import actor
 from send_data import PORT_FOR_SENDING_DATA, recieveObject
 import sys
 import zmq
-import pickle
-from src.messages import Add, Delete
 import time
 from src.data import Data
 import threading 

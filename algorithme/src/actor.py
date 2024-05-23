@@ -5,11 +5,6 @@ from src.communication import Communication
 from src.partition import Partition
 
 from params import NB_DATAS, NB_NODES
-import numpy as np
-import zmq
-import time
-import pickle
-import copy
 
 
 #from cache import Cache
