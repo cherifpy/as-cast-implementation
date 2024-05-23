@@ -27,7 +27,7 @@ def recieveObject():
 
     # Créer un socket
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        s.bind(("localhost", PORT_FOR_SENDING_DATA))
+        s.bind(('', PORT_FOR_SENDING_DATA))
         s.listen()
         #attendre une connexion
         conn, addr = s.accept()
