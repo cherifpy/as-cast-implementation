@@ -1,7 +1,7 @@
 import sys
 from src.messages import Add, Delete, Message, Blocked, Connexion
 from src.data import Data
-from  src.communication import Communication
+from src.communication import Communication
 from src.partition import Partition
 
 from params import NB_DATAS, NB_NODES
