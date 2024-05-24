@@ -86,9 +86,10 @@ if __name__ == "__main__":
         
         actor.output.write(f"\nreceived {message.type} message from {message.id_sender} source:{message.id_source}")
         print(f"\nreceived {message.type} message from {message.id_sender} source:{message.id_source}")
-        #actor.processMessage(message)
-        thread = threading.Thread(target=actor.processMessage, args=(message,))
-        thread.start()
+        actor.processMessage(message)
+        
+        #thread = threading.Thread(target=actor.processMessage, args=(message,))
+        #thread.start()
         break
     actor.output.close()
     actor.stop()
