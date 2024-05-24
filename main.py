@@ -82,7 +82,7 @@ if __name__ == "__main__":
 
         #config.enoslib.ensure_python3(True,roles=config.roles[machine["roles"][0]])
         
-        cmd = f"python3  /home/csimohammed/as-cast-implementation/algorithme/as-cast.py {i} {port_pub} {port_sub}"
+        cmd = f"python3  /home/csimohammed/as-cast-implementation/algorithme/as-cast.py {i} {port_pub} {port_sub} > /home/csimohammed/log.out >> /home/csimohammed/log.err"
 
         
         result = config.enoslib.run_command(

@@ -97,11 +97,12 @@ class Actor:
 
         if self.source_of[message.id_data] == 0 and self.all_datas_costs[message.id_data] > (message.cost + cost):
             self.output.write(f"\nAdd message from {message.id_sender} accepted new cost for data id {message.id_data} : {message.cost + cost}")
+            print(f"\nAdd message from {message.id_sender} accepted new cost for data id {message.id_data} : {message.cost + cost}")
             self.all_datas_costs[message.id_data] = message.cost + cost
             self.data_sources[message.id_data] = message.id_source
             
             self.output.write(f"\nNew source {str(self.data_sources)}")
-
+            print(f"\nNew source {str(self.data_sources)}")
             message.id_sender = self.id
             message.cost = message.cost + cost
             self.sendToConnectedPeers(message)
@@ -109,6 +110,7 @@ class Actor:
             return True
         else:
             self.output.write("\nAdd message not accepted")
+            print("\nAdd message not accepted")
             return False
 
     def recievedDelete(self, message:Delete):
@@ -123,6 +125,7 @@ class Actor:
 
 
             self.output.write(f"\nDelete message from {message.id_sender} accepted")
+            print(f"\nDelete message from {message.id_sender} accepted")
             self.all_datas_costs[message.id_data] = float('inf')
             self.data_sources[message.id_data] = message.id_source
 
@@ -133,6 +136,7 @@ class Actor:
             return True
         else:
             self.output.write("\nAdd message not accepted")
+            print("\nAdd message not accepted")
             return False
         
 
