@@ -25,5 +25,5 @@ for i, machine in enumerate(config.machines):
                 background=True
             )
         
-        p.fetch(src=f"/tmp", dest="~")                      # Download file log.out
-        p.fetch(src=f"/tmp", dest="~") 
+        p.fetch(src=f"/tmp/*", dest="~")                      # Download file log.out
+        p.fetch(src=f"/tmp/*", dest="~") 
