@@ -90,7 +90,7 @@ if __name__ == "__main__":
         
         #thread = threading.Thread(target=actor.processMessage, args=(message,))
         #thread.start()
-        break
+        break 
     actor.output.close()
     actor.stop()
 

@@ -108,8 +108,7 @@ if __name__ == "__main__":
                 background=True
             )
 
-            p.fetch(src=f"/tmp/log_{i}.out", dest="~")                      # Download file log.out
-            p.fetch(src=f"/tmp/log_{i}.err", dest="~") 
+            
 
         
         """
