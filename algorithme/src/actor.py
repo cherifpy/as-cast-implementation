@@ -37,7 +37,7 @@ class Actor:
         self.datas_ids = {}
         self.datas = {}
         self.history = {}
-        self.output = open(f"/home/csimohammed/{self.id}.txt",'w')
+        self.output = open(f"/tmp/{self.id}.txt",'w')
         self.connection = None
         
 

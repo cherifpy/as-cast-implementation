@@ -1,6 +1,6 @@
 print("lets do somme stuff here")
 
-f = open("home/csimohammed/voila.txt","w")
+f = open("/tmp/voila.txt","w")
 
 
 f.write("hello")
