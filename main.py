@@ -85,7 +85,7 @@ if __name__ == "__main__":
 
         #config.enoslib.ensure_python3(True,roles=config.roles[machine["roles"][0]])
         cmd = f"python3  /home/csimohammed/as-cast-implementation/algorithme/as-cast.py {i} {port_pub} {port_sub} > /home/csimohammed/log_{i}.out >> /home/csimohammed/log_{i}.err"
-        with config.enoslib.actions(roles=config.roles) as p:
+        with config.enoslib.actions(roles=config.roles[machine["roles"][0]]) as p:
             #p.ensure_python()
             p.apt(name=["git","python3-pip"], state="present")
 
