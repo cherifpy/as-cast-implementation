@@ -21,7 +21,7 @@ with config.enoslib.actions(roles=config.roles) as p:
     p.command(
             task_name = "Executing the code on a site",
             cmd = cmd,
-            background=True
+            
         )
     
     p.fetch(src=f"/tmp/log.out", dest="~")                      # Download file log.out
