@@ -5,4 +5,6 @@ f = open("home/csimohammed/voila.txt","w")
 
 f.write("hello")
 
-print("i write hello on a file")
+print("i write hello on a filecd")
+
+f.close()
