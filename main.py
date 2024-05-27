@@ -55,6 +55,7 @@ if __name__ == "__main__":
     port_sub = 5554
     port_pub = 5454
 
+    """    
     with config.enoslib.actions(roles=config.roles) as p:
         #p.ensure_python()
         p.apt(name=["git","python3-pip"], state="present")
@@ -73,6 +74,8 @@ if __name__ == "__main__":
         )
 
 
+    """
+
     for i, machine in enumerate(config.machines):
 
         datas = sendInfosToPeer(i,graphe, ips_address,5554,5454)
@@ -81,20 +84,48 @@ if __name__ == "__main__":
         print(datas)
 
         #config.enoslib.ensure_python3(True,roles=config.roles[machine["roles"][0]])
-        
-        cmd = f"python3  /home/csimohammed/as-cast-implementation/algorithme/as-cast.py {i} {port_pub} {port_sub} > /home/csimohammed/log.out >> /home/csimohammed/log.err"
+        cmd = f"python3  /home/csimohammed/as-cast-implementation/algorithme/as-cast.py {i} {port_pub} {port_sub} > /home/csimohammed/log_{i}.out >> /home/csimohammed/log_{i}.err"
+        with config.enoslib.actions(roles=config.roles) as p:
+            #p.ensure_python()
+            p.apt(name=["git","python3-pip"], state="present")
+
+            #p.pip(name=["pyzmq"])
+
+            p.command(
+                task_name = "Delete the last version of the repo",
+                cmd = "rm -rf /home/csimohammed/as-cast-implementation"
+            )
+            p.git(repo="https://github.com/cherifpy/as-cast-implementation.git", dest="/home/csimohammed/as-cast-implementation")
+
+            p.command(
+                task_name = "installing python libs",
+                cmd = "pip3 install pyzmq eclipse-zenoh numpy sockets"
+            )
+
+            p.command(
+                task_name = "Executing the code on a site",
+                cmd = cmd,
+                background=True
+            )
+
+            p.fetch(src=f"/tmp/log_{i}.out", dest="~")                      # Download file log.out
+            p.fetch(src=f"/tmp/log_{i}.err", dest="~") 
 
         
+        """
         result = config.enoslib.run_command(
             cmd,
             roles = config.roles[machine["roles"][0]],
             background=True
         )
-        
-        """cmd = f"python algorithme/as-cast.py {i} {port_pub} {port_sub}"
+
+        cmd = f"python algorithme/as-cast.py {i} {port_pub} {port_sub}"
 
         thread = threading.Thread(target=run_command, args=(cmd,))
-        thread.start()"""
+        thread.start()
+        """
+
+
         port_sub += 1
         port_pub += 1
         print(f"adresse IP du node {0} : {ips_address[i]}")
