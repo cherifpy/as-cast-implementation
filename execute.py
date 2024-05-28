@@ -17,10 +17,11 @@ provider = config.setReservation()
 cmd = f"python3  /home/csimohammed/as-cast-implementation/test.py > /tmp/log.out >> /tmp/log.err"  
 
 with config.enoslib.actions(roles=config.roles) as p:
+    p.git(repo="https://github.com/cherifpy/as-cast-implementation.git", dest="/home/csimohammed/as-cast-implementation")
+
     p.command(
             task_name = "Executing the code on a site",
             cmd = cmd,
-            
         )
     
     p.fetch(src=f"/tmp/log.out", dest="~")                      # Download file log.out
