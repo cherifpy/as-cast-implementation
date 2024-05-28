@@ -26,5 +26,5 @@ with config.enoslib.actions(roles=config.roles) as p:
             cmd = cmd,
         )
     
-    p.fetch(src=f"/tmp/log.out", dest="~")                      # Download file log.out
+    p.fetch(src=f"/tmp/voila.txt", dest="~")                      # Download file log.out
     p.fetch(src=f"/tmp/log.err", dest="~") 
