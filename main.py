@@ -1,5 +1,5 @@
 import subprocess
-
+import time
 from exceptiongroup import catch
 from Exp.configuration import Configuration
 from algorithme.send_data import sendObject
@@ -135,6 +135,7 @@ if __name__ == "__main__":
     
     print("Waiting for Outputs:")
     count = 0
+    time.sleep(10)
     while True:
         if count == config.nb_sites:
             break
