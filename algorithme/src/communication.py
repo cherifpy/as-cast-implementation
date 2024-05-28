@@ -2,6 +2,7 @@ import zmq
 from .messages import Message
 import time
 import zenoh
+import socket
 
 class Communication(object):
 
@@ -26,9 +27,9 @@ class Communication(object):
             self.sub_socket.connect(f"tcp://{peer['ip']}:{peer['pub_port']}")
             output.write(f"\nsub connected to tcp://{peer['ip']}:{peer['pub_port']}")
             print(f"\nsub connected to tcp://{peer['ip']}:{peer['pub_port']}")
-            
-        pub_address = f"tcp://*:{self.pub_port}"
-        output.write(f"\npub bined on tcp://*:{self.pub_port}")
+        
+        pub_address = f"tcp://{socket.gethostname()}:{self.pub_port}"
+        output.write(f"\npub bined on tcp://*:{self.pub_port}\n")
         print(f"\npub bined on tcp://*:{self.pub_port}")
         self.pub_socket.bind(pub_address)
 
