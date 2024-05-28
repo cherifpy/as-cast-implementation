@@ -14,8 +14,7 @@ MAT_GRAPHE = config.getGraphe()
 provider = config.setReservation()
 
 
-cmd = f"python3  home/csimohammed/as-cast-implementation/test.py > /tmp/log.out >> /tmp/log.err"
-        
+cmd = f"python3  /home/csimohammed/as-cast-implementation/test.py > /tmp/log.out >> /tmp/log.err"  
 
 with config.enoslib.actions(roles=config.roles) as p:
     p.command(
