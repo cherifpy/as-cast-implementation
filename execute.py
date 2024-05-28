@@ -17,6 +17,8 @@ provider = config.setReservation()
 cmd = f"python3  /home/csimohammed/as-cast-implementation/test.py > /tmp/log.out >> /tmp/log.err"  
 
 with config.enoslib.actions(roles=config.roles) as p:
+
+    p.apt(name=["git","python3-pip"], state="present")
     p.git(repo="https://github.com/cherifpy/as-cast-implementation.git", dest="/home/csimohammed/as-cast-implementation")
 
     p.command(
