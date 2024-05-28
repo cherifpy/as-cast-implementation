@@ -49,8 +49,8 @@ if __name__ == "__main__":
 
     actor.start()
             
-    poller = zmq.Poller()
-    poller.register(actor.sub_socket, zmq.POLLIN)
+    """poller = zmq.Poller()
+    poller.register(actor.sub_socket, zmq.POLLIN)"""
     
     print(type(actor.id))
 
@@ -91,6 +91,7 @@ if __name__ == "__main__":
         #thread = threading.Thread(target=actor.processMessage, args=(message,))
         #thread.start()
         break 
+    
     actor.output.close()
     actor.stop()
 

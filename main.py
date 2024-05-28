@@ -1,4 +1,6 @@
 import subprocess
+
+from exceptiongroup import catch
 from Exp.configuration import Configuration
 from algorithme.send_data import sendObject
 
@@ -131,6 +133,22 @@ if __name__ == "__main__":
         sendObject(datas, ips_address[i])
 
     
+    print("Waiting for Outputs:")
+    count = 0
+    while True:
+        if count == len(config.nb_sites):
+            break
+
+        for i, machine in enumerate(config.machines): 
+            
+            try:
+                with config.enoslib.actions(roles=config.roles[machine["roles"][0]]) as p:
+                    p.fetch(src=f"/tmp/log_{i}.txt", dest="~")  
+                print("Output fetched")
+                count +=1                    
+            except:
+                continue
+
     
         
         
