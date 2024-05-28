@@ -136,7 +136,7 @@ if __name__ == "__main__":
     print("Waiting for Outputs:")
     count = 0
     while True:
-        if count == len(config.nb_sites):
+        if count == config.nb_sites:
             break
 
         for i, machine in enumerate(config.machines): 
