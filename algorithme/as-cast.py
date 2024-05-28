@@ -79,7 +79,8 @@ if __name__ == "__main__":
     """if events:
         for socket, event in events.items():
             if socket == sub and event == zmq.POLLIN:"""
-    time.sleep(10)
+    
+
     while True:
         
         message = actor.connection.recv()
