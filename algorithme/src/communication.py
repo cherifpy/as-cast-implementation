@@ -31,8 +31,8 @@ class Communication(object):
         pub_address = f"tcp://{socket.gethostname()}:{self.pub_port}"
         
         print(f"\npub bined on tcp://*:{self.pub_port}")
-        self.pub_socket.bind(f"tcp://*:{self.pub_port}")
-        output.write(f"\nPub bined on {pub_address}\n")
+        self.pub_socket.bind(f"tcp://*:{self.pub_port}\n")
+        output.write(f"Pub bined on {pub_address}\n")
 
     def send(self, data:Message):
         time.sleep(0.2)
