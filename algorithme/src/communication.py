@@ -28,8 +28,8 @@ class Communication(object):
             output.write(f"\nsub connected to tcp://{peer['ip']}:{peer['pub_port']}\n")
             
         pub_address = f"tcp://{self.ip_address}:{self.pub_port}"        
-        self.pub_socket.bind(f"tcp://{self.ip_address}:{self.pub_port}\n")
-        output.write(f"Pub bined on {pub_address}\n")
+        self.pub_socket.bind(pub_address)
+        output.write(f"Pub binded on {pub_address}\n")
 
     def send(self, data:Message):
         time.sleep(0.2)

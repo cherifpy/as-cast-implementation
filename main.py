@@ -29,7 +29,7 @@ def sendInfosToPeer(id_peer:int,graphe_info,ip_address, sub_port, pub_port):
 ###### Start a reservation
 PATH_TO_CONFIG_FILE = "configurationFiles/conf.yaml"
 port_sub = 8780
-port_pub = 8180
+port_pub = 5555
 
 if __name__ == "__main__":
 
@@ -50,7 +50,7 @@ if __name__ == "__main__":
     if config.execution_local:
         import threading
         for i, machine in enumerate(config.machines):
-            datas = sendInfosToPeer(i,graphe, ips_address,8780,8180)
+            datas = sendInfosToPeer(i,graphe, ips_address,8780,5555)
             
             thread = threading.Thread(
                 target=run_command, 
@@ -69,7 +69,7 @@ if __name__ == "__main__":
 
         for i, machine in enumerate(config.machines):
 
-            datas = sendInfosToPeer(i,graphe, ips_address,8780,8180)
+            datas = sendInfosToPeer(i,graphe, ips_address,8780,5555)
             
             print(f"node {i} ========")
             print(datas)
