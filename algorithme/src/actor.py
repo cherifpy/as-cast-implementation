@@ -15,11 +15,12 @@ from params import NB_DATAS, NB_NODES
 
 class Actor:
 
-    def __init__(self,id:str, site:str, costs:list, total_memorie, neighbors:dict,sub_port:int,pub_port:int,):
+    def __init__(self,id:str, site:str, costs:list, total_memorie, neighbors:dict,sub_port:int,pub_port:int,ip_address):
         self.id = id
         self.site = site
         self.neighbors = neighbors
         self.costs = costs 
+        self.ip_address = ip_address
         self.partitions = [None for i in range(NB_DATAS)] #list of partition is include on (one peer data)
         self.source_of = [0 for i in range(NB_DATAS)] #binary vectore to say if this node is a source to the i-th data 
         self.all_datas_costs = [float('inf') for i in range(NB_DATAS)] #vector of all costs for all the data
@@ -47,7 +48,7 @@ class Actor:
             Starts the server by creating a socket and listening for connections.
         """
         self.output.write("\n\n\n===========start exp:")
-        self.connection = Communication(self.pub_port, self.sub_port)
+        self.connection = Communication(self.ip_address,self.pub_port, self.sub_port)
         self.connection.connect(self.neighbors, self.output)
 
         
