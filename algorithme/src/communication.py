@@ -18,7 +18,7 @@ class Communication(object):
         self.ip_address = ip_address
 
 
-    def connect(self,ip_address, neighbords, output):
+    def connect(self, neighbords, output):
         """
             Starts the server by creating a socket and listening for connections.
         """

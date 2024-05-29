@@ -28,8 +28,8 @@ def sendInfosToPeer(id_peer:int,graphe_info,ip_address, sub_port, pub_port):
     return infos
 ###### Start a reservation
 PATH_TO_CONFIG_FILE = "configurationFiles/conf.yaml"
-port_sub = 8880
-port_pub = 8080
+port_sub = 8780
+port_pub = 8180
 
 if __name__ == "__main__":
 
