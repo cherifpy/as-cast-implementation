@@ -90,7 +90,7 @@ if __name__ == "__main__":
                 )
                 p.command(
                     task_name = "Executing the code on a site",
-                    cmd = f"python3  /home/csimohammed/as-cast-implementation/algorithme/as-cast.py {i} {port_pub} {port_sub} {ips_address[i]} > /home/csimohammed/log_{i}.out >> /home/csimohammed/log_{i}.err",
+                    cmd = f"python3  /home/csimohammed/as-cast-implementation/algorithme/as-cast.py {i} {port_pub} {port_sub} {ips_address[i]} > /tmp/log_{i}.out >> /tmp/log_{i}.err",
                     background=True
                 )
 
@@ -102,7 +102,7 @@ if __name__ == "__main__":
     
         print("Waiting for Outputs:")
         count = 0
-        time.sleep(15)
+        time.sleep(20)
         while True:
             if count == config.nb_sites:
                 break
@@ -112,6 +112,8 @@ if __name__ == "__main__":
                 try:
                     with config.enoslib.actions(roles=config.roles[machine["roles"][0]]) as p:
                         p.fetch(src=f"/tmp/log_{i}.txt", dest="~")  
+                        p.fetch(src=f"/tmp/log_{i}.err", dest="~")
+                        p.fetch(src=f"/tmp/log_{i}.out", dest="~")    
                     print("Output fetched")
                     count +=1                    
                 except:
