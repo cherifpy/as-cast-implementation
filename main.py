@@ -54,8 +54,8 @@ if __name__ == "__main__":
     #datas to send
 
     
-    port_sub = 5554
-    port_pub = 5454
+    port_sub = 8880
+    port_pub = 8080
 
     """    
     with config.enoslib.actions(roles=config.roles) as p:
@@ -109,9 +109,6 @@ if __name__ == "__main__":
                 cmd = cmd,
                 background=True
             )
-
-            
-
         
         """
         result = config.enoslib.run_command(
@@ -129,13 +126,13 @@ if __name__ == "__main__":
 
         port_sub += 1
         port_pub += 1
-        print(f"adresse IP du node {0} : {ips_address[i]}")
+        print(f"adresse IP du node {i} : {ips_address[i]}")
         sendObject(datas, ips_address[i])
 
     
     print("Waiting for Outputs:")
     count = 0
-    time.sleep(20)
+    time.sleep(15)
     while True:
         if count == config.nb_sites:
             break

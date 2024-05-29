@@ -25,7 +25,7 @@ class Communication(object):
 
         for peer in neighbords:
             self.sub_socket.connect(f"tcp://{peer['ip']}:{peer['pub_port']}")
-            output.write(f"\nsub connected to tcp://{peer['ip']}:{peer['pub_port']}")
+            output.write(f"\nsub connected to tcp://{peer['ip']}:{peer['pub_port']}\n")
             print(f"\nsub connected to tcp://{peer['ip']}:{peer['pub_port']}")
         
         pub_address = f"tcp://{socket.gethostname()}:{self.pub_port}"
