@@ -90,7 +90,7 @@ if __name__ == "__main__":
                 )
                 p.command(
                     task_name = "Executing the code on a site",
-                    cmd = f"python3  /home/csimohammed/as-cast-implementation/algorithme/as-cast.py {i} {port_pub} {port_sub} {ips_address[i]} > /tmp/log_{i}.out >> /tmp/log_{i}.err",
+                    cmd = f"python3  /home/csimohammed/as-cast-implementation/algorithme/as-cast.py {i} {port_pub} {port_sub} {ips_address[i]} > /tmp/strout_{i}.out >> /tmp/strerr_{i}.err",
                     background=True
                 )
 
