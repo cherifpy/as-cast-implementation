@@ -6,7 +6,7 @@ import socket
 
 class Communication(object):
 
-    def __init__(self, pub_port, sub_port) -> None:
+    def __init__(self, pub_port, sub_port):
         self.context = zmq.Context()
         self.pub_socket = self.context.socket(zmq.PUB)
         self.sub_socket = self.context.socket(zmq.SUB)
@@ -29,19 +29,17 @@ class Communication(object):
             print(f"\nsub connected to tcp://{peer['ip']}:{peer['pub_port']}")
         
         pub_address = f"tcp://{socket.gethostname()}:{self.pub_port}"
-        output.write(f"\npub bined on tcp://*:{self.pub_port}\n")
+        output.write(f"\nPub bined on {pub_address}\n")
         print(f"\npub bined on tcp://*:{self.pub_port}")
         self.pub_socket.bind(pub_address)
 
 
     def send(self, data:Message):
-        
         time.sleep(0.2)
         self.pub_socket.send_pyobj(data) 
         
     
     def recv(self):
-
         return self.sub_socket.recv_pyobj()
 
     def stop(self):

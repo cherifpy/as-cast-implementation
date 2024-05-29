@@ -72,7 +72,7 @@ class Actor:
         #if the message is an add do this 
         if isinstance(message, Add):
             self.recievedAdd(message)
-            pass
+            return True
         
         if isinstance(message, Connexion):
             pass
@@ -160,7 +160,7 @@ class Actor:
                 id_source = self.id
             )
 
-            self.datas
+            
 
             self.sendToConnectedPeers(add_message)
 
