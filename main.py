@@ -50,7 +50,7 @@ if __name__ == "__main__":
     if config.execution_local:
         import threading
         for i, machine in enumerate(config.machines):
-            datas = sendInfosToPeer(i,graphe, ips_address,8880,8080)
+            datas = sendInfosToPeer(i,graphe, ips_address,8780,8180)
             
             thread = threading.Thread(
                 target=run_command, 
@@ -69,11 +69,11 @@ if __name__ == "__main__":
 
         for i, machine in enumerate(config.machines):
 
-            datas = sendInfosToPeer(i,graphe, ips_address,8880,8080)
+            datas = sendInfosToPeer(i,graphe, ips_address,8780,8180)
             
             print(f"node {i} ========")
             print(datas)
-
+            
             #config.enoslib.ensure_python3(True,roles=config.roles[machine["roles"][0]])
             with config.enoslib.actions(roles=config.roles[machine["roles"][0]]) as p:
                 #p.ensure_python()
@@ -112,8 +112,8 @@ if __name__ == "__main__":
                 try:
                     with config.enoslib.actions(roles=config.roles[machine["roles"][0]]) as p:
                         p.fetch(src=f"/tmp/log_{i}.txt", dest="~")  
-                        p.fetch(src=f"/tmp/log_{i}.err", dest="~")
-                        p.fetch(src=f"/tmp/log_{i}.out", dest="~")    
+                        #p.fetch(src=f"/tmp/log_{i}.err", dest="~")
+                        #p.fetch(src=f"/tmp/log_{i}.out", dest="~")    
                     print("Output fetched")
                     count +=1                    
                 except:

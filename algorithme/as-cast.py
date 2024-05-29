@@ -15,7 +15,7 @@ if __name__ == "__main__":
 
     PORT_PUB = sys.argv[2]
     PORT_SUB = sys.argv[3]
-    IP_ADDRESS = sys.argv[4]
+    IP_ADDRESS = str(sys.argv[4])
 
     #her, this function is used to recieve data from the site manager (where the enoslib script is executed)
     DATAS_RECIEVED = recieveObject()

@@ -50,8 +50,6 @@ class Actor:
         self.output.write("\n\n\n===========start exp:")
         self.connection = Communication(self.ip_address,self.pub_port, self.sub_port)
         self.connection.connect(self.neighbors, self.output)
-
-        
                             
     def stop(self):
         """

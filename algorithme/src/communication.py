@@ -11,7 +11,6 @@ class Communication(object):
         self.pub_socket = self.context.socket(zmq.PUB)
         self.sub_socket = self.context.socket(zmq.SUB)
 
-
         #declaration des ports
         self.pub_port = pub_port
         self.sub_port = sub_port
@@ -28,10 +27,7 @@ class Communication(object):
             self.sub_socket.connect(f"tcp://{peer['ip']}:{peer['pub_port']}")
             output.write(f"\nsub connected to tcp://{peer['ip']}:{peer['pub_port']}\n")
             
-        
-        pub_address = f"tcp://{socket.gethostname()}:{self.pub_port}"
-        
-        
+        pub_address = f"tcp://{self.ip_address}:{self.pub_port}"        
         self.pub_socket.bind(f"tcp://{self.ip_address}:{self.pub_port}\n")
         output.write(f"Pub bined on {pub_address}\n")
 
