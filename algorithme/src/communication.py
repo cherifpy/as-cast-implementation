@@ -83,10 +83,7 @@ class CommunicationZENOH(object):
         """
             stop all the connexion with the other peers
         """
-        #close pub sub socket
-        self.sub_socket.close() 
-        self.pub_socket.close()
-        self.context.term()
+        pass
 
     def listener(sample):
         print(f"Received {sample.kind} ('{sample.key_expr}': '{msg.id_sender}')")
