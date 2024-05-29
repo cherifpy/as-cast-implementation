@@ -16,7 +16,7 @@ class Configuration:
         
         self.config_file_path = config_file_path 
         self.parametres = self.__redYamlFile()
-        self.enoslib = en #en
+        
         self.cluster = cluster
         self.username = self.parametres.get("username")
         self.walltime = self.parametres.get("exp_walltime")
@@ -32,12 +32,14 @@ class Configuration:
         self.sites = [machine["roles"][0] for machine in self.machines]
         self.roles = None
         self.contraintes = self.parametres.get('network_constraints',[{}])[0].get("constraints")
-        self.enoslib.init_logging(level=logging.INFO)
-        self.enoslib.check()
+        
         self.nb_sites = len(self.machines)
         self.python_libs:list = None
+        self.enoslib = None if self.execution_local else en #en
         
-
+        if not self.execution_local:
+            self.enoslib.init_logging(level=logging.INFO)
+            self.enoslib.check()
     
         #print(self.machines)
 

@@ -1,7 +1,7 @@
 import pickle
 import socket
 import time
-PORT_FOR_SENDING_DATA = 8880
+PORT_FOR_SENDING_DATA = 5555
 
 """ 
     J'aurais besoin de ca pour envoyer les données vers chaqu'un des nodes au debut de l'exp
@@ -9,7 +9,7 @@ PORT_FOR_SENDING_DATA = 8880
 """
 
 def sendObject(obj:object, ip:str):
-    time.sleep(3)
+    time.sleep(1)
     
     #serialize the object
     data = pickle.dumps(obj)
@@ -27,7 +27,7 @@ def recieveObject():
 
     # Créer un socket
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        s.bind((socket.gethostname(), PORT_FOR_SENDING_DATA))
+        s.bind(("localhost", PORT_FOR_SENDING_DATA))
         s.listen()
         #attendre une connexion
         conn, addr = s.accept()

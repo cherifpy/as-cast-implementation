@@ -37,7 +37,7 @@ class Actor:
         self.datas_ids = {}
         self.datas = {}
         self.history = {}
-        self.output = open(f"/tmp/log_{self.id}.txt",'w')
+        self.output = open(f"log_{self.id}.txt",'w')
         self.connection = None
         
 
@@ -56,12 +56,9 @@ class Actor:
         """
             ftop all the connexion with the other peers
         """
+        self.output.write("\nEnd of EXP")
         self.output.close() #close file
-
-        #close pub sub socket
-        self.sub_socket.close() 
-        self.pub_socket.close()
-        self.context.term()
+        
 
     
     def processMessage(self,message:Message):

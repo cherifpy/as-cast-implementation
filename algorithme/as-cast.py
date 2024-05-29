@@ -93,7 +93,6 @@ if __name__ == "__main__":
         #thread.start()
         break 
     
-    actor.output.close()
     actor.stop()
 
         
