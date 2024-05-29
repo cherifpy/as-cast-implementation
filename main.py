@@ -135,7 +135,7 @@ if __name__ == "__main__":
     
     print("Waiting for Outputs:")
     count = 0
-    time.sleep(10)
+    time.sleep(20)
     while True:
         if count == config.nb_sites:
             break
