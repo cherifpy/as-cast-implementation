@@ -46,11 +46,11 @@ class Actor:
         """
             Starts the server by creating a socket and listening for connections.
         """
-
+        self.output.write("\n\n\n===========start exp:")
         self.connection = Communication(self.pub_port, self.sub_port)
         self.connection.connect(self.neighbors, self.output)
 
-        self.output.write("\n\n\n===========start exp:")
+        
                             
     def stop(self):
         """
