@@ -111,7 +111,7 @@ if __name__ == "__main__":
                 
                 try:
                     with config.enoslib.actions(roles=config.roles[machine["roles"][0]]) as p:
-                        p.fetch(src=f"/tmp/log_{i}.txt", dest="~")  
+                        p.fetch(src=f"/log_{i}.txt", dest="~")  
                     print("Output fetched")
                     count +=1                    
                 except:
