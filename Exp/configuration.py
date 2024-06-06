@@ -8,6 +8,7 @@ import enoslib as en
 import logging 
 
 class Configuration:
+
     def __init__(self, cluster = None, config_file_path="/"):
         """
             classe constructor is used to create an instence of the class
@@ -15,7 +16,7 @@ class Configuration:
         """
         
         self.config_file_path = config_file_path 
-        self.parametres = self.__redYamlFile()
+        self.parametres = self.readYamlFile(self.config_file_path)
         
         self.cluster = cluster
         self.username = self.parametres.get("username")
@@ -30,6 +31,7 @@ class Configuration:
         self.start_time = -1
         self.machines = [machine for machine in self.parametres.get('machines', [])]
         self.sites = [machine["roles"][0] for machine in self.machines]
+        self.storage_capacities = [machine['storage'] for machine in self.machines]
         self.roles = None
         self.contraintes = self.parametres.get('network_constraints',[{}])[0].get("constraints")
         
@@ -302,7 +304,8 @@ class Configuration:
     def getActualResources(self):
         return self.roles, self.networks
 
-    def __redYamlFile(self):
-        with open(self.config_file_path, 'r') as f:
+    def readYamlFile(self,config_file_path):
+        with open(config_file_path, 'r') as f:
             parametres = yaml.safe_load(f)
         return parametres
+    
