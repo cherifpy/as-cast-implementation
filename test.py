@@ -37,7 +37,7 @@ def pickle_deserializer(key, value, flags):
 params = sys.argv[1]
 # Initialize the client with Pickle serialization
 client = Client((params, 11211), serializer=pickle_serializer, deserializer=pickle_deserializer)
-
+client.set('cherif_key', "cherf".encode())
 # Define a sample class
 class Person:
     def __init__(self, name, age):
