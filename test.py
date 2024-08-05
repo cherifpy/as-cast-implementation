@@ -20,23 +20,23 @@ f.write(f'La valeur pour "my_key" est : {value.decode()}')
 # Fermer la connexion
 client.close()"""
 
+
+import sys
 import pickle
 from pymemcache.client.base import Client
-from pymemcache.serde import Serde
-import sys
 
+def pickle_serializer(key, value):
+    return pickle.dumps(value), 1  # The flag '1' is just a custom flag to identify pickle serialized data
 
-class PickleSerde(Serde):
-    def serialize(self, key, value):
-        return pickle.dumps(value), 0
-
-    def deserialize(self, key, value, flags):
+def pickle_deserializer(key, value, flags):
+    if flags == 1:
         return pickle.loads(value)
+    return value  # If the flag is not 1, return the value as is
 
 
 params = sys.argv[1]
 # Initialize the client with Pickle serialization
-client = Client((params, 11211), serde=PickleSerde())
+client = Client((params, 11211), serializer=pickle_serializer, deserializer=pickle_deserializer)
 
 # Define a sample class
 class Person:
