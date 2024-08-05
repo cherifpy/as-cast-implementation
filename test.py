@@ -3,7 +3,7 @@ import sys
 print("hello")
 params = sys.argv[1]
 
-f = open("/tmp/log.txt")
+f = open("/tmp/log.txt", 'w')
 
 # Se connecter à Memcached sur l'adresse IP spécifiée
 client = base.Client(params, 11211)
