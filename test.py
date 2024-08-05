@@ -1,10 +1,20 @@
-print("lets do somme stuff here")
+from pymemcache.client import base
+import sys
+print("hello")
+params = sys.argv[1]
 
-f = open("/tmp/voila.txt","w")
+f = open("/tmp/log.txt")
 
+# Se connecter à Memcached sur l'adresse IP spécifiée
+client = base.Client(params, 11211)
 
-f.write("hello")
+# Définir une clé/valeur
+client.set('my_key', 'my_value')
 
-print("i write hello on a filecd")
+# Récupérer une valeur
+value = client.get('my_key')
 
-f.close()
+f.write(f'La valeur pour "my_key" est : {value.decode()}')
+
+# Fermer la connexion
+client.close()
