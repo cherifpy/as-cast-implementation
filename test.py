@@ -65,7 +65,7 @@ f.write(retrieved_person)"""
 import pylibmc
 import sys
 # List of Memcached servers
-servers = [f"{sys.argv[1]}:11211"]
+servers = f"{sys.argv[1]}:11211"
 
 # Create a client
 client = pylibmc.Client(servers, binary=True, behaviors={"consistent_hash": True})
