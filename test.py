@@ -68,7 +68,7 @@ import sys
 servers = f"{sys.argv[1]}:11211"
 
 # Create a client
-client = pylibmc.Client(servers, binary=True, behaviors={"consistent_hash": True})
+client = pylibmc.Client(servers, binary=True, behaviors={"tcp_nodelay": True})
 
 # Set and get values
 client.set("key", "value")
