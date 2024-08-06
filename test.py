@@ -20,7 +20,7 @@ f.write(f'La valeur pour "my_key" est : {value.decode()}')
 # Fermer la connexion
 client.close()"""
 
-
+"""
 import sys
 import pickle
 from pymemcache.client.base import Client
@@ -36,8 +36,11 @@ def pickle_deserializer(key, value, flags):
 
 params = sys.argv[1]
 # Initialize the client with Pickle serialization
-client = Client((params, 11211), serializer=pickle_serializer, deserializer=pickle_deserializer)
-client.set('cherif_key', "cherf".encode())
+client = Client(("localhost", 11211))
+client.set('cherif_key', "cherf")
+
+retrieved_person = client.get('cherif_key')
+print(retrieved_person)
 # Define a sample class
 class Person:
     def __init__(self, name, age):
@@ -54,8 +57,20 @@ person = Person('Alice', 30)
 client.set('person_key', person)
 
 # Retrieve and deserialize the object from Memcached
-retrieved_person = client.get('person_key')
-
+retrieved_person = client.get('cherif_key')
+print(retrieved_person)
 f = open("/tmp/log.txt", 'w')
-f.write(retrieved_person)
+f.write(retrieved_person)"""
+
+import pylibmc
+import sys
+# List of Memcached servers
+servers = [f"{sys.argv[1]}:11211"]
+
+# Create a client
+client = pylibmc.Client(servers, binary=True, behaviors={"consistent_hash": True})
+
+# Set and get values
+client.set("key", "value")
+print(client.get("key"))  # Output: 'value'
 
